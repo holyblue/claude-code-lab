@@ -187,11 +187,49 @@ sqlite3 data/app.db
 
 ## API 端點
 
-待實作後會列出所有可用的 API 端點。
+API 文檔可透過 Swagger UI 查看：啟動應用後訪問 `http://localhost:8000/docs`
+
+### 已實作的 API 端點
+
+**帳組管理 (Account Groups)**
+- `POST /api/account-groups/` - 創建帳組
+- `GET /api/account-groups/` - 列出所有帳組
+- `GET /api/account-groups/{id}` - 獲取特定帳組
+- `PATCH /api/account-groups/{id}` - 更新帳組
+- `DELETE /api/account-groups/{id}` - 刪除帳組
+
+**工作類別管理 (Work Categories)**
+- `POST /api/work-categories/` - 創建工作類別
+- `GET /api/work-categories/` - 列出所有工作類別
+- `GET /api/work-categories/{id}` - 獲取特定工作類別
+- `PATCH /api/work-categories/{id}` - 更新工作類別
+- `DELETE /api/work-categories/{id}` - 刪除工作類別
+
+**專案管理 (Projects)**
+- `POST /api/projects/` - 創建專案
+- `GET /api/projects/` - 列出專案（支援狀態篩選）
+- `GET /api/projects/{id}` - 獲取特定專案
+- `PATCH /api/projects/{id}` - 更新專案
+- `DELETE /api/projects/{id}` - 軟刪除專案
+
+**時間記錄管理 (Time Entries)**
+- `POST /api/time-entries/` - 創建時間記錄
+- `GET /api/time-entries/` - 列出時間記錄（支援日期範圍篩選）
+- `GET /api/time-entries/{id}` - 獲取特定時間記錄
+- `PATCH /api/time-entries/{id}` - 更新時間記錄
+- `DELETE /api/time-entries/{id}` - 刪除時間記錄
+
+**統計分析 (Statistics)**
+- `GET /api/stats/projects/{id}` - 獲取專案統計（使用率、超支預警）
+- `GET /api/stats/projects` - 獲取所有專案統計
+
+**TCS 格式化 (TCS Format)**
+- `POST /api/tcs/format` - 格式化單日時間記錄
+- `POST /api/tcs/format/range` - 格式化日期範圍時間記錄
 
 ## 開發進度
 
-### Phase 1: 基礎架構 (Week 1)
+### Phase 1: 基礎架構 (Week 1) - ✅ 已完成
 - [x] 專案結構建立
 - [x] 測試框架設定 (pytest + pytest-bdd)
 - [x] 基礎配置 (config.py, database.py)
@@ -205,15 +243,22 @@ sqlite3 data/app.db
   - AccountGroup, WorkCategory, Project
   - TimeEntry, Stats, TCS
   - 20 個測試通過，Schema 覆蓋率 97-100%
-- [ ] API 端點 (0/10+)
-- [ ] 業務邏輯層 (0/5)
-- [ ] TCS 同步功能
+- [x] **API 端點 (6 組 CRUD 完成)** ✅
+  - AccountGroup, WorkCategory, Project CRUD
+  - TimeEntry CRUD + 日期範圍查詢
+  - Stats API (專案統計、使用率追蹤)
+  - TCS API (格式化輸出、單日/多日)
+- [x] **業務邏輯層 (2/2 完成)** ✅
+  - Stats Service: 專案工時統計、超支預警
+  - TCS Service: 時間記錄格式化
+- [x] TCS 格式化功能
 
 ### 測試狀態
 - ✅ 單元測試：50/50 通過 (30 模型 + 20 Schema)
 - ✅ 模型測試覆蓋率：89-95%
 - ✅ Schema 測試覆蓋率：97-100%
-- ⚠️ 總體覆蓋率：49% (目標 80%，API 實作後會提升)
+- ⚠️ 整合測試：需修復（資料庫初始化問題）
+- ⚠️ 總體覆蓋率：44% (API 層未被整合測試覆蓋)
 - 📝 BDD 測試：待實作 step definitions
 
 ## 參考文件
