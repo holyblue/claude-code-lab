@@ -69,6 +69,16 @@ def db_session(db_engine) -> Generator[Session, None, None]:
         Base.metadata.drop_all(bind=db_engine)
 
 
+@pytest.fixture(scope="function")
+def db(db_session) -> Generator[Session, None, None]:
+    """
+    Alias for db_session to support BDD step definitions.
+
+    This provides a shorter fixture name for use in step definitions.
+    """
+    yield db_session
+
+
 # ============================================================================
 # Time & Timezone Fixtures
 # ============================================================================
