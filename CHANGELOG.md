@@ -1,6 +1,6 @@
 # Changelog
 
-本檔案記錄專案的所有重要變更，遵循 [agent.md](./agent.md) 規範。
+本檔案記錄專案的所有重要變更，遵循 [claude.md](./claude.md) 規範。
 
 ## 格式說明
 - **日期** - 功能名稱
