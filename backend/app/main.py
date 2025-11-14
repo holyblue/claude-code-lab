@@ -54,8 +54,43 @@ async def health_check():
     return {"status": "healthy"}
 
 
-# API routers will be included here after they are created
-# Example:
-# from app.api.endpoints import projects, time_entries
-# app.include_router(projects.router, prefix="/api/projects", tags=["projects"])
-# app.include_router(time_entries.router, prefix="/api/time-entries", tags=["time-entries"])
+# Include API routers
+from app.api.endpoints import (
+    account_groups,
+    work_categories,
+    projects,
+    time_entries,
+    stats,
+    tcs,
+)
+
+app.include_router(
+    account_groups.router,
+    prefix="/api/account-groups",
+    tags=["account-groups"],
+)
+app.include_router(
+    work_categories.router,
+    prefix="/api/work-categories",
+    tags=["work-categories"],
+)
+app.include_router(
+    projects.router,
+    prefix="/api/projects",
+    tags=["projects"],
+)
+app.include_router(
+    time_entries.router,
+    prefix="/api/time-entries",
+    tags=["time-entries"],
+)
+app.include_router(
+    stats.router,
+    prefix="/api/stats",
+    tags=["statistics"],
+)
+app.include_router(
+    tcs.router,
+    prefix="/api/tcs",
+    tags=["tcs-format"],
+)
