@@ -5,28 +5,28 @@ FastAPI backend for the time tracking system.
 ## 技術棧
 
 ### 核心框架
-- **Web 框架**: FastAPI 0.109.0
-- **ASGI 伺服器**: Uvicorn 0.27.0 (with uvloop for high performance)
-- **資料庫**: SQLite (via SQLAlchemy 2.0.25)
-- **ORM**: SQLAlchemy 2.0.25 + aiosqlite 0.19.0
-- **資料驗證**: Pydantic 2.5.3 + pydantic-settings 2.1.0
+- **Web 框架**: FastAPI 0.121.2 ⬆️
+- **ASGI 伺服器**: Uvicorn 0.38.0 ⬆️ (with uvloop for high performance)
+- **資料庫**: SQLite (via SQLAlchemy 2.0.44 ⬆️)
+- **ORM**: SQLAlchemy 2.0.44 + aiosqlite 0.20.0 ⬆️
+- **資料驗證**: Pydantic 2.12.4 ⬆️ + pydantic-settings 2.6.1 ⬆️
 
 ### 測試框架
 - **測試執行**: pytest 7.4.4
 - **BDD 測試**: pytest-bdd 7.0.1 (Gherkin support)
-- **測試覆蓋率**: pytest-cov 4.1.0 (目標 ≥80%)
-- **非同步測試**: pytest-asyncio 0.23.3
-- **HTTP 測試**: httpx 0.26.0
+- **測試覆蓋率**: pytest-cov 6.0.0 ⬆️ (目標 ≥80%)
+- **非同步測試**: pytest-asyncio 0.23.8 ⬆️
+- **HTTP 測試**: httpx 0.28.1 ⬆️
 
 ### 程式碼品質
-- **格式化**: black 24.1.1
+- **格式化**: black 25.11.0 ⬆️ (2025 stable style)
 - **Import 排序**: isort 5.13.2
-- **程式碼檢查**: flake8 7.0.0
+- **程式碼檢查**: flake8 7.1.1 ⬆️
 
 ### 工具函式庫
 - **日期處理**: python-dateutil 2.8.2
 - **時區支援**: pytz 2024.1
-- **檔案上傳**: python-multipart 0.0.6
+- **檔案上傳**: python-multipart 0.0.20 ⬆️
 
 ### 依賴管理 ⚡
 - **推薦**: **uv** (10-100x faster than pip)
