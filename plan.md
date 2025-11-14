@@ -72,6 +72,10 @@
   - 格式：R + 年月日 + 流水號
   - 用於內部追蹤，填寫 TCS 時不需要
 - 專案名稱（必填）
+- **核定工時**（選填，單位：人天，如：20）
+  - 專案核准的總工時額度
+  - 用於追蹤專案工時使用情況
+  - 換算：1 人天 = 7.5 小時
 - 預設帳組（選填，可從固定清單選擇）
 - 預設工作類別（選填，可從固定清單選擇）
 - 備註說明
@@ -177,8 +181,16 @@
 - 按專案統計
   - 各專案累計總工時
   - 各專案正常工時 vs 加班工時
+  - **核定工時追蹤**：
+    - 核定工時（人天 / 小時）
+    - 已使用工時（僅計算扣抵類別）
+    - 不扣抵工時（如 A08 商模）
+    - 剩餘工時
+    - 使用率（已使用 / 核定）
+    - 預警提示（使用率 > 80% 顯示警告）
 - 按工作類別統計
   - 各類別累計工時
+  - 區分扣抵 vs 不扣抵工時
 - 自訂日期範圍統計
 
 #### 5.2 視覺化圖表
@@ -266,10 +278,15 @@
 
 #### 7.2 工作類別管理
 - 預設工作類別清單（固定選項）：
-  - A07 其它
-  - B04 其它
-  - I07 休假（休假、病假、事假等）
+  - A07 其它（扣抵核定工時）
+  - A08 商模（**不扣抵**核定工時）
+  - B04 其它（扣抵核定工時）
+  - I07 休假（休假、病假、事假等）（不扣抵核定工時）
   - （其他可新增）
+- 工作類別屬性：
+  - 代碼與名稱
+  - **是否扣抵核定工時**（預設：是）
+  - 說明：A08 商模等特殊類別雖計入專案工時，但不消耗核定工時
 - 新增、編輯、刪除工作類別
 - 設定常用工作類別
 
@@ -315,6 +332,7 @@ CREATE TABLE projects (
     code VARCHAR(50) NOT NULL UNIQUE,          -- 專案代碼（如：需2025單001）
     requirement_code VARCHAR(50) NOT NULL,     -- 需求單代碼（如：R202507236423）
     name VARCHAR(200) NOT NULL,                -- 專案名稱
+    approved_man_days DECIMAL(10,2),           -- 核定工時（人天，如：20）
     default_account_group_id INTEGER,          -- 預設帳組 FK
     default_work_category_id INTEGER,          -- 預設工作類別 FK
     description TEXT,                          -- 備註
@@ -349,6 +367,7 @@ CREATE TABLE work_categories (
     code VARCHAR(50) NOT NULL,                 -- 類別代碼（如：A07）
     name VARCHAR(200) NOT NULL,                -- 類別名稱（如：其它）
     full_name VARCHAR(250) GENERATED ALWAYS AS (code || ' ' || name) STORED,
+    deduct_approved_hours BOOLEAN DEFAULT TRUE,-- 是否扣抵核定工時（A08商模=FALSE）
     is_default BOOLEAN DEFAULT FALSE,          -- 是否為常用
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -418,10 +437,11 @@ INSERT INTO account_groups (code, name, is_default) VALUES
 ('O18', '數據智能應用科', TRUE);
 
 -- 工作類別
-INSERT INTO work_categories (code, name, is_default) VALUES
-('A07', '其它', TRUE),
-('B04', '其它', TRUE),
-('I07', '休假（休假、病假、事假等）', TRUE);
+INSERT INTO work_categories (code, name, deduct_approved_hours, is_default) VALUES
+('A07', '其它', TRUE, TRUE),
+('A08', '商模', FALSE, TRUE),  -- 不扣抵核定工時
+('B04', '其它', TRUE, TRUE),
+('I07', '休假（休假、病假、事假等）', FALSE, TRUE);  -- 休假不扣抵核定工時
 
 -- 系統設定
 INSERT INTO settings (key, value) VALUES
@@ -448,6 +468,8 @@ PUT    /api/projects/{id}         - 更新專案
 DELETE /api/projects/{id}         - 刪除專案（軟刪除）
 PATCH  /api/projects/{id}/archive - 歸檔/取消歸檔專案
 GET    /api/projects/{id}/stats   - 獲取專案工時統計
+                                    返回：核定工時、已使用（扣抵）、不扣抵、
+                                          剩餘工時、使用率、按類別分組明細
 ```
 
 #### 工時記錄 API
@@ -497,7 +519,9 @@ GET    /api/stats/overview        - 總覽統計（本週、本月工時）
                                     返回：正常工時、平日加班、週末加班、總加班
 GET    /api/stats/by-project      - 按專案統計
                                     ?start_date=2025-11-01&end_date=2025-11-30
-                                    返回：各專案總工時、正常工時、加班工時
+                                    返回：各專案總工時、正常工時、加班工時、
+                                          核定工時、已使用工時（扣抵）、
+                                          不扣抵工時、剩餘工時、使用率
 GET    /api/stats/by-category     - 按工作類別統計
 GET    /api/stats/overtime        - 加班統計
                                     ?start_date=2025-11-01&end_date=2025-11-30
@@ -650,13 +674,20 @@ frontend/
 #### 4. 專案管理 (Projects)
 - 專案列表（搜尋、篩選）
   - 顯示：專案代碼、需求單代碼、專案名稱、狀態
+  - 顯示核定工時與使用率（進度條）
   - 支援按專案代碼或需求單代碼搜尋
 - 新增/編輯專案表單
   - 必填：專案代碼、需求單代碼、專案名稱
-  - 選填：預設帳組、預設工作類別、備註、顏色
+  - 選填：核定工時（人天）、預設帳組、預設工作類別、備註、顏色
 - 專案詳情
-  - 顯示完整專案資訊（含需求單代碼）
-  - 專案工時統計
+  - 顯示完整專案資訊（含需求單代碼、核定工時）
+  - **核定工時使用情況**：
+    - 核定：XX 人天（XX 小時）
+    - 已使用：XX 小時（扣抵類別）
+    - 不扣抵：XX 小時（如 A08 商模）
+    - 剩餘：XX 小時
+    - 進度條視覺化
+  - 專案工時明細（按類別分組）
 - 歸檔專案管理
 
 #### 5. 統計報表 (Statistics)
@@ -944,6 +975,28 @@ class TCSAutoFiller:
 
 ## 變更歷史
 
+### 2025-11-14 - v1.4
+- **重要業務邏輯**：核定工時追蹤與扣抵機制
+  - 專案新增「核定工時」欄位（單位：人天，1人天=7.5小時）
+  - 工作類別新增「是否扣抵核定工時」屬性
+  - A08 商模、I07 休假：計入專案工時但**不扣抵**核定工時
+  - 其他類別（A07、B04等）：計入且**扣抵**核定工時
+- **資料庫更新**：
+  - projects 表：新增 approved_man_days 欄位（核定人天）
+  - work_categories 表：新增 deduct_approved_hours 欄位（布林值）
+  - 初始資料：新增 A08 商模（不扣抵）
+- **統計功能增強**：
+  - 專案統計：顯示核定工時、已使用（扣抵）、不扣抵、剩餘、使用率
+  - 使用率預警：超過 80% 顯示警告
+  - 工作類別統計：區分扣抵 vs 不扣抵工時
+- **專案詳情增強**：
+  - 顯示核定工時使用情況（進度條視覺化）
+  - 按類別分組顯示工時明細
+  - 專案列表顯示使用率進度條
+- **API 更新**：
+  - /api/projects/{id}/stats：返回核定工時追蹤資訊
+  - /api/stats/by-project：增加核定工時相關統計
+
 ### 2025-11-14 - v1.3
 - **新增欄位**：專案增加「需求單代碼」欄位
   - 格式：R + 年月日 + 流水號（如：R202507236423）
@@ -977,4 +1030,4 @@ class TCSAutoFiller:
 
 ---
 
-*本計劃書最後更新：2025-11-14 17:30 UTC+8 (v1.3)*
+*本計劃書最後更新：2025-11-14 18:00 UTC+8 (v1.4)*
