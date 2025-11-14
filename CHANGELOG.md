@@ -12,6 +12,55 @@
 
 ---
 
+## [2025-11-14] - 加入 Context7 MCP Server 與套件版本檢查
+
+### ✅ 已完成
+
+**Context7 MCP Server 設定：**
+- ✅ 創建 `.mcp.json` 配置檔案
+- ✅ 啟用 Context7 MCP server（@upstash/context7-mcp）
+- ✅ 更新 Claude Code settings.json
+
+**套件版本檢查：**
+使用 Context7 檢查所有 Python 套件的最新版本：
+
+| 套件 | 當前版本 | 最新版本 | 狀態 |
+|------|----------|----------|------|
+| FastAPI | 0.109.0 | 0.121.2 | 🟢 可升級 |
+| Uvicorn | 0.27.0 | 0.38.0 | 🟢 可升級 |
+| SQLAlchemy | 2.0.25 | 2.0.44 | 🟢 可升級 |
+| Pydantic | 2.5.3 | 2.12.4 | 🟢 可升級 |
+| Pytest | 7.4.4 | 9.0.1 | 🟡 大版本變更 |
+| pytest-bdd | 7.0.1 | 8.1.0 | 🟡 大版本變更 |
+| Black | 24.1.1 | 25.11.0 | 🟢 可升級 |
+
+**升級策略：**
+- 階段 1：安全升級核心框架（FastAPI, Uvicorn, SQLAlchemy, Pydantic）
+- 階段 2：謹慎升級測試框架（Pytest 7→9, pytest-bdd 7→8）需等專案穩定
+
+### 🔑 Context7 功能
+
+**用途：**
+- 📦 查詢最新套件版本
+- 📖 獲取最新文件
+- ✅ 避免 LLM 幻覺（過時 API）
+
+**設定檔案：**
+- `.mcp.json` - MCP server 配置
+- `~/.claude/settings.json` - 啟用 context7
+
+### 📁 變更檔案
+- `.mcp.json` - 新增 Context7 MCP server 配置
+- `~/.claude/settings.json` - 啟用 context7 server
+
+### 📝 備註
+- Context7 無需 API key 即可使用（有速率限制）
+- 註冊 https://context7.com/dashboard 可獲得更高速率限制
+- MCP server 透過 npx 自動安裝和執行
+- Node.js v22.21.1 已就緒
+
+---
+
 ## [2025-11-14] - 升級依賴管理工具至 uv（極速版）
 
 ### ✅ 已完成
