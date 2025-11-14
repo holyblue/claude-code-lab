@@ -12,6 +12,107 @@
 
 ---
 
+## [2025-11-14] - Pydantic Schemas 實作完成（TDD）
+
+### ✅ 已完成
+
+**實作 6 個 Pydantic Schema 模組：**
+
+1. **AccountGroup Schemas** (`app/schemas/account_group.py`)
+   - AccountGroupBase, Create, Update, Response, List
+   - 驗證帳組代碼、名稱、是否為常用
+
+2. **WorkCategory Schemas** (`app/schemas/work_category.py`)
+   - WorkCategoryBase, Create, Update, Response, List
+   - 驗證工作類別代碼、是否扣抵核定工時
+
+3. **Project Schemas** (`app/schemas/project.py`)
+   - ProjectBase, Create, Update, Response, List
+   - 驗證專案代碼、需求單號、核定工時、顏色格式
+
+4. **TimeEntry Schemas** (`app/schemas/time_entry.py`)
+   - TimeEntryBase, Create, Update, Response, List, DateRange
+   - 驗證日期、工時（支援 0.5 小時增量，最大 99.99）
+   - 支援 Markdown 格式工作描述
+
+5. **Stats Schemas** (`app/schemas/stats.py`)
+   - ProjectStats, DailyStats, WeeklyStats, MonthlyStats
+   - 專案工時統計、使用率計算、超支預警（80%/100%）
+   - Computed field: `is_over_budget` 自動判斷超支狀態
+
+6. **TCS Schemas** (`app/schemas/tcs.py`)
+   - TCSFormatRequest, TCSFormatResponse
+   - TCSDateRangeRequest, TCSDateRangeResponse
+   - 支援單日/多日 TCS 格式化輸出
+
+### 📊 測試成果
+- ✅ **20 個 Schema 單元測試**全部通過
+- ✅ Schema 覆蓋率：**97-100%**
+- ✅ 測試執行時間：0.90 秒
+- ✅ 總測試數：50/50（30 模型 + 20 Schema）
+
+### 🔑 關鍵技術實作
+
+**Pydantic v2 最佳實踐：**
+- 使用 `ConfigDict(from_attributes=True)` 取代舊版 `class Config`
+- 使用 `Field` 進行欄位驗證（min_length、max_length、ge、le）
+- 使用 `@computed_field` 實作自動計算欄位
+- 使用 `Literal` 定義固定選項（warning_level: none/warning/danger）
+- 使用 `pattern` 驗證 hex 顏色格式 (`#[0-9A-Fa-f]{6}`)
+
+**日期/數字型別處理：**
+- 修復 `date` 欄位名稱衝突（`from datetime import date as DateType`）
+- 使用 `Decimal` 處理精確數字（工時、金額）
+- 設定 `decimal_places` 控制小數位數
+
+**業務規則驗證：**
+- 工時範圍：0 < hours <= 99.99，支援 0.5 增量
+- 核定工時可為負數（表示超支）
+- 使用率可超過 100%（超支專案）
+- 專案代碼唯一性驗證
+
+### 📁 變更檔案
+
+**新增檔案：**
+- `backend/app/schemas/account_group.py` - 帳組 Schema
+- `backend/app/schemas/work_category.py` - 工作類別 Schema
+- `backend/app/schemas/project.py` - 專案 Schema
+- `backend/app/schemas/time_entry.py` - 時間記錄 Schema
+- `backend/app/schemas/stats.py` - 統計 Schema
+- `backend/app/schemas/tcs.py` - TCS 格式 Schema
+- `backend/tests/unit/test_schemas.py` - Schema 單元測試
+
+**修改檔案：**
+- `backend/app/schemas/__init__.py` - 匯出所有 Schema
+- `backend/README.md` - 更新開發進度
+
+### 📝 技術難點與解決方案
+
+**問題 1：Pydantic 欄位名稱衝突**
+- **錯誤：** `date: date` 導致型別標註衝突
+- **解決：** 使用型別別名 `from datetime import date as DateType`
+- **影響檔案：** `time_entry.py`, `tcs.py`
+
+**問題 2：使用率驗證邏輯**
+- **原設計：** `usage_rate <= 100`（不允許超支）
+- **修正：** 移除上限，允許 > 100%（反映實際超支情況）
+- **業務邏輯：** 超支專案仍需顯示實際使用率
+
+### 🎯 下一步
+
+**Phase 1 剩餘任務：**
+- [ ] API 端點實作（10+ endpoints）
+- [ ] Services 業務邏輯層（5+ services）
+- [ ] BDD Step Definitions
+- [ ] TCS 同步功能實作
+
+**目標：**
+- 完成 Phase 1 後總覆蓋率達 80%+
+- 實作完整 CRUD API
+- 通過所有 BDD 測試場景
+
+---
+
 ## [2025-11-14] - Python 套件安全升級（階段 1）
 
 ### ✅ 已完成
