@@ -17,6 +17,12 @@
 - 目標：最低 80% 覆蓋率
 - 執行：`pytest --cov=app --cov-report=html`
 
+### 4. 依賴管理 ⚡
+- **工具**: uv (10-100x faster than pip)
+- **虛擬環境**: `.venv/` (使用 `uv venv` 創建)
+- **安裝依賴**: `uv pip install -r requirements.txt`
+- **運行命令**: `source .venv/bin/activate` 或 `uv run <command>`
+
 ## 執行條件與檢查點
 
 ### ✅ 每次完成新功能後必須執行
