@@ -1,3 +1,5 @@
 export * from './client'
 export * from './projects'
 export * from './timeEntries'
+export * from './accountGroups'
+export * from './workCategories'
