@@ -1,0 +1,50 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "confirm": "Confirm",
+    "search": "Search",
+    "loading": "Loading...",
+    "success": "Success",
+    "error": "Error"
+  },
+  "nav": {
+    "timeEntries": "Time Entries",
+    "calendar": "Calendar",
+    "projects": "Projects",
+    "statistics": "Statistics",
+    "settings": "Settings"
+  },
+  "project": {
+    "title": "Project Management",
+    "code": "Project Code",
+    "requirementCode": "Requirement Code",
+    "name": "Project Name",
+    "approvedManDays": "Approved Man-Days",
+    "status": "Status",
+    "description": "Description",
+    "active": "Active",
+    "completed": "Completed",
+    "archived": "Archived"
+  },
+  "timeEntry": {
+    "title": "Time Entries",
+    "date": "Date",
+    "project": "Project",
+    "accountGroup": "Account Group",
+    "workCategory": "Work Category",
+    "hours": "Hours",
+    "description": "Description",
+    "totalHours": "Total Hours"
+  },
+  "stats": {
+    "title": "Statistics",
+    "projectStats": "Project Stats",
+    "dailyStats": "Daily Stats",
+    "weeklyStats": "Weekly Stats",
+    "monthlyStats": "Monthly Stats"
+  }
+}

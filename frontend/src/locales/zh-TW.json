@@ -1,0 +1,50 @@
+{
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "delete": "刪除",
+    "edit": "編輯",
+    "add": "新增",
+    "confirm": "確認",
+    "search": "搜尋",
+    "loading": "載入中...",
+    "success": "操作成功",
+    "error": "操作失敗"
+  },
+  "nav": {
+    "timeEntries": "工時記錄",
+    "calendar": "日曆視圖",
+    "projects": "專案管理",
+    "statistics": "統計報表",
+    "settings": "系統設定"
+  },
+  "project": {
+    "title": "專案管理",
+    "code": "專案代碼",
+    "requirementCode": "需求單代碼",
+    "name": "專案名稱",
+    "approvedManDays": "核定工時（人天）",
+    "status": "狀態",
+    "description": "備註",
+    "active": "進行中",
+    "completed": "已完成",
+    "archived": "已封存"
+  },
+  "timeEntry": {
+    "title": "工時記錄",
+    "date": "日期",
+    "project": "專案",
+    "accountGroup": "帳組",
+    "workCategory": "工作類別",
+    "hours": "實際工時",
+    "description": "工作說明",
+    "totalHours": "總計工時"
+  },
+  "stats": {
+    "title": "統計報表",
+    "projectStats": "專案統計",
+    "dailyStats": "每日統計",
+    "weeklyStats": "每週統計",
+    "monthlyStats": "每月統計"
+  }
+}
