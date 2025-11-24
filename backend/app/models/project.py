@@ -61,6 +61,7 @@ class Project(Base):
     # default_account_group = relationship("AccountGroup", foreign_keys=[default_account_group_id])
     # default_work_category = relationship("WorkCategory", foreign_keys=[default_work_category_id])
     # time_entries = relationship("TimeEntry", back_populates="project")
+    milestones = relationship("Milestone", back_populates="project", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Project(id={self.id}, code='{self.code}', name='{self.name}')>"

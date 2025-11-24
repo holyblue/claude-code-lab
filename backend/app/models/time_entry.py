@@ -41,7 +41,7 @@ class TimeEntry(Base):
     # Required Fields
     date = Column(Date, nullable=False, index=True)
     project_id = Column(Integer, ForeignKey("projects.id"), nullable=False, index=True)
-    account_group_id = Column(Integer, ForeignKey("account_groups.id"), nullable=False)
+    account_group_id = Column(Integer, ForeignKey("account_groups.id"), nullable=True)  # 模組改為選填
     work_category_id = Column(Integer, ForeignKey("work_categories.id"), nullable=False)
     hours = Column(Numeric(5, 2), nullable=False)  # Max 99.99 hours, supports 0.5 increments
     description = Column(String, nullable=False)  # Supports Markdown

@@ -57,10 +57,10 @@
         <el-table-column label="專案" min-width="200">
           <template #default="{ row }">
             <div v-if="getProject(row.project_id)">
-              <el-tag :color="getProject(row.project_id)?.color" effect="dark" size="small">
+              <el-tag :color="getProject(row.project_id)?.color" style="color: white;" size="small">
                 {{ getProject(row.project_id)?.code }}
               </el-tag>
-              <span style="margin-left: 8px">
+              <span class="project-name">
                 {{ getProject(row.project_id)?.name }}
               </span>
             </div>
@@ -161,7 +161,11 @@ const accountGroupStore = useAccountGroupStore()
 const workCategoryStore = useWorkCategoryStore()
 
 // 篩選條件
-const dateRange = ref<[string, string] | null>(null)
+const getTodayDate = (): string => {
+  return new Date().toISOString().split('T')[0]
+}
+
+const dateRange = ref<[string, string] | null>([getTodayDate(), getTodayDate()])
 const filterProjectId = ref<number | null>(null)
 
 // 對話框狀態
@@ -174,7 +178,7 @@ const formLoading = ref(false)
 
 // 計算總工時
 const totalHours = computed(() => {
-  return timeEntryStore.timeEntries.reduce((sum, entry) => sum + entry.hours, 0).toFixed(1)
+  return timeEntryStore.timeEntries.reduce((sum, entry) => sum + Number(entry.hours), 0).toFixed(1)
 })
 
 // 輔助函數
@@ -284,17 +288,22 @@ const handleSubmit = async (data: TimeEntryCreate) => {
   try {
     if (isEditMode.value && editingId.value) {
       // 編輯模式
+      console.log('🔄 開始更新，ID:', editingId.value, '資料:', data)
       const updateData: TimeEntryUpdate = { ...data }
-      await timeEntryStore.updateTimeEntry(editingId.value, updateData)
+      const result = await timeEntryStore.updateTimeEntry(editingId.value, updateData)
+      console.log('✅ 更新成功，回傳:', result)
       ElMessage.success('更新成功')
     } else {
       // 新增模式
-      await timeEntryStore.createTimeEntry(data)
+      console.log('➕ 開始新增，資料:', data)
+      const result = await timeEntryStore.createTimeEntry(data)
+      console.log('✅ 新增成功，回傳:', result)
       ElMessage.success('新增成功')
     }
     dialogVisible.value = false
     await fetchData()
   } catch (error) {
+    console.error('❌ 提交失敗:', error)
     ElMessage.error(isEditMode.value ? '更新失敗' : '新增失敗')
   } finally {
     formLoading.value = false
@@ -348,5 +357,12 @@ onMounted(async () => {
   background-color: var(--el-fill-color-light);
   border-radius: 4px;
   text-align: right;
+}
+
+.project-name {
+  margin-left: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #303133;
 }
 </style>

@@ -19,7 +19,7 @@ export const workCategoriesApi = {
 
   // 更新工作類別
   update: (id: number, data: Partial<WorkCategoryCreate>) => {
-    return apiClient.put<WorkCategory>(`/api/work-categories/${id}`, data)
+    return apiClient.patch<WorkCategory>(`/api/work-categories/${id}`, data)
   },
 
   // 刪除工作類別

@@ -390,6 +390,35 @@ class TestTimeEntryAPI:
         assert data["date"] == "2025-11-14"
         assert float(data["hours"]) == 7.5
 
+    def test_create_time_entry_without_account_group(self, client, db):
+        """Test creating time entry without account group (optional field)."""
+        # Setup required foreign key data (without account group)
+        wc = WorkCategory(code="A07", name="其它", deduct_approved_hours=True)
+        proj = Project(code="需2025單001", requirement_code="R1", name="Test")
+        db.add_all([wc, proj])
+        db.commit()
+        db.refresh(wc)
+        db.refresh(proj)
+
+        response = client.post(
+            "/api/time-entries/",
+            json={
+                "date": "2025-11-24",
+                "project_id": proj.id,
+                "account_group_id": None,  # 模組為空（選填）
+                "work_category_id": wc.id,
+                "hours": 3.0,
+                "description": "測試不選擇模組",
+                "display_order": 0,
+            },
+        )
+        assert response.status_code == 201
+        data = response.json()
+        assert data["date"] == "2025-11-24"
+        assert float(data["hours"]) == 3.0
+        assert data["account_group_id"] is None  # 驗證模組為 None
+        assert data["description"] == "測試不選擇模組"
+
     def test_create_time_entry_invalid_project(self, client, db):
         """Test creating time entry with invalid project ID."""
         ag = AccountGroup(code="A00", name="Test")

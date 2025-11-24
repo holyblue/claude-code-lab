@@ -1,5 +1,11 @@
 import { apiClient } from './client'
-import type { Project, ProjectCreate, ProjectUpdate, PaginatedResponse } from '../types'
+import type {
+  Project,
+  ProjectCreate,
+  ProjectUpdate,
+  ProjectStats,
+  PaginatedResponse,
+} from '../types'
 
 export const projectsApi = {
   // 取得所有專案
@@ -19,11 +25,21 @@ export const projectsApi = {
 
   // 更新專案
   update: (id: number, data: ProjectUpdate) => {
-    return apiClient.put<Project>(`/api/projects/${id}`, data)
+    return apiClient.patch<Project>(`/api/projects/${id}`, data)
   },
 
   // 刪除專案（軟刪除）
   delete: (id: number) => {
     return apiClient.delete<{ message: string }>(`/api/projects/${id}`)
+  },
+
+  // 取得單一專案統計
+  getStats: (id: number) => {
+    return apiClient.get<ProjectStats>(`/api/stats/projects/${id}`)
+  },
+
+  // 取得所有專案統計
+  getAllStats: () => {
+    return apiClient.get<ProjectStats[]>('/api/stats/projects')
   },
 }

@@ -26,10 +26,9 @@ class TimeEntryBase(BaseModel):
         gt=0,
         description="專案 ID",
     )
-    account_group_id: int = Field(
-        ...,
-        gt=0,
-        description="帳組 ID",
+    account_group_id: Optional[int] = Field(
+        None,
+        description="模組 ID（選填）",
     )
     work_category_id: int = Field(
         ...,
@@ -82,8 +81,7 @@ class TimeEntryUpdate(BaseModel):
     )
     account_group_id: Optional[int] = Field(
         None,
-        gt=0,
-        description="帳組 ID",
+        description="模組 ID（選填）",
     )
     work_category_id: Optional[int] = Field(
         None,

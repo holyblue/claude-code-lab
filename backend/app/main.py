@@ -62,6 +62,7 @@ from app.api.endpoints import (
     time_entries,
     stats,
     tcs,
+    milestones,
 )
 
 app.include_router(
@@ -93,4 +94,9 @@ app.include_router(
     tcs.router,
     prefix="/api/tcs",
     tags=["tcs-format"],
+)
+app.include_router(
+    milestones.router,
+    prefix="/api",
+    tags=["milestones"],
 )

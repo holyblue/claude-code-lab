@@ -10,6 +10,7 @@ from app.models.work_category import WorkCategory
 from app.models.time_entry import TimeEntry
 from app.models.work_template import WorkTemplate
 from app.models.setting import Setting
+from app.models.milestone import Milestone
 
 __all__ = [
     "Project",
@@ -18,4 +19,5 @@ __all__ = [
     "TimeEntry",
     "WorkTemplate",
     "Setting",
+    "Milestone",
 ]

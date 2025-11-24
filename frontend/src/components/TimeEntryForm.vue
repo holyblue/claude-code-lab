@@ -34,32 +34,31 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <el-form-item :label="t('timeEntry.project')" prop="project_id">
-          <el-select
-            v-model="formData.project_id"
-            :placeholder="t('timeEntry.project')"
-            filterable
-            style="width: 100%"
-            :loading="projectStore.loading"
-          >
-            <el-option
-              v-for="project in projectStore.activeProjects"
-              :key="project.id"
-              :label="`${project.code} - ${project.name}`"
-              :value="project.id"
-            />
-          </el-select>
-        </el-form-item>
-      </el-col>
+    <el-form-item :label="t('timeEntry.project')" prop="project_id">
+      <el-select
+        v-model="formData.project_id"
+        :placeholder="t('timeEntry.project')"
+        filterable
+        style="width: 100%"
+        :loading="projectStore.loading"
+      >
+        <el-option
+          v-for="project in projectStore.activeProjects"
+          :key="project.id"
+          :label="`${project.code} - ${project.name}`"
+          :value="project.id"
+        />
+      </el-select>
+    </el-form-item>
 
+    <el-row :gutter="20">
       <el-col :span="12">
         <el-form-item :label="t('timeEntry.accountGroup')" prop="account_group_id">
           <el-select
             v-model="formData.account_group_id"
             :placeholder="t('timeEntry.accountGroup')"
             filterable
+            clearable
             style="width: 100%"
             :loading="accountGroupStore.loading"
           >
@@ -72,34 +71,36 @@
           </el-select>
         </el-form-item>
       </el-col>
-    </el-row>
 
-    <el-form-item :label="t('timeEntry.workCategory')" prop="work_category_id">
-      <el-select
-        v-model="formData.work_category_id"
-        :placeholder="t('timeEntry.workCategory')"
-        filterable
-        style="width: 100%"
-        :loading="workCategoryStore.loading"
-      >
-        <el-option
-          v-for="category in workCategoryStore.workCategories"
-          :key="category.id"
-          :label="category.full_name"
-          :value="category.id"
-        >
-          <span>{{ category.full_name }}</span>
-          <el-tag
-            v-if="!category.deduct_approved_hours"
-            type="warning"
-            size="small"
-            style="margin-left: 8px"
+      <el-col :span="12">
+        <el-form-item :label="t('timeEntry.workCategory')" prop="work_category_id">
+          <el-select
+            v-model="formData.work_category_id"
+            :placeholder="t('timeEntry.workCategory')"
+            filterable
+            style="width: 100%"
+            :loading="workCategoryStore.loading"
           >
-            不扣抵
-          </el-tag>
-        </el-option>
-      </el-select>
-    </el-form-item>
+            <el-option
+              v-for="category in workCategoryStore.workCategories"
+              :key="category.id"
+              :label="category.full_name"
+              :value="category.id"
+            >
+              <span>{{ category.full_name }}</span>
+              <el-tag
+                v-if="!category.deduct_approved_hours"
+                type="warning"
+                size="small"
+                style="margin-left: 8px"
+              >
+                不扣抵
+              </el-tag>
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-col>
+    </el-row>
 
     <el-form-item :label="t('timeEntry.description')" prop="description">
       <el-input
@@ -165,7 +166,7 @@ const getDefaultDate = (): string => {
 const formData = reactive<TimeEntryCreate>({
   date: props.initialData.date || getDefaultDate(),
   project_id: props.initialData.project_id || 0,
-  account_group_id: props.initialData.account_group_id || 0,
+  account_group_id: props.initialData.account_group_id ?? null,  // 使用 ?? 保留 null 值
   work_category_id: props.initialData.work_category_id || 0,
   hours: props.initialData.hours || 0.5,
   description: props.initialData.description || '',
@@ -175,7 +176,7 @@ const formData = reactive<TimeEntryCreate>({
 const rules: FormRules = {
   date: [{ required: true, message: '請選擇日期', trigger: 'change' }],
   project_id: [{ required: true, message: '請選擇專案', trigger: 'change' }],
-  account_group_id: [{ required: true, message: '請選擇帳組', trigger: 'change' }],
+  // account_group_id 改為選填，不設置任何驗證規則
   work_category_id: [{ required: true, message: '請選擇工作類別', trigger: 'change' }],
   hours: [
     { required: true, message: '請輸入工時', trigger: 'blur' },
@@ -198,7 +199,7 @@ watch(
       Object.assign(formData, {
         date: newData.date || getDefaultDate(),
         project_id: newData.project_id || 0,
-        account_group_id: newData.account_group_id || 0,
+        account_group_id: newData.account_group_id ?? null,  // 使用 ?? 保留 null 值
         work_category_id: newData.work_category_id || 0,
         hours: newData.hours || 0.5,
         description: newData.description || '',
@@ -211,11 +212,18 @@ watch(
 
 const handleSubmit = async () => {
   if (!formRef.value) return
-  await formRef.value.validate((valid) => {
-    if (valid) {
-      emit('submit', { ...formData })
-    }
-  })
+  try {
+    await formRef.value.validate((valid, fields) => {
+      if (valid) {
+        console.log('✅ 表單驗證通過，送出資料：', formData)
+        emit('submit', { ...formData })
+      } else {
+        console.error('❌ 表單驗證失敗：', fields)
+      }
+    })
+  } catch (error) {
+    console.error('❌ 表單驗證錯誤：', error)
+  }
 }
 
 const handleCancel = () => {

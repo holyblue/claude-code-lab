@@ -80,7 +80,7 @@ export interface TimeEntry {
   id: number
   date: string
   project_id: number
-  account_group_id: number
+  account_group_id: number | null  // 模組改為選填，允許 null
   work_category_id: number
   hours: number
   description: string
@@ -93,7 +93,7 @@ export interface TimeEntry {
 export interface TimeEntryCreate {
   date: string
   project_id: number
-  account_group_id: number
+  account_group_id: number | null  // 模組改為選填，允許 null
   work_category_id: number
   hours: number
   description: string
@@ -104,7 +104,7 @@ export interface TimeEntryCreate {
 export interface TimeEntryUpdate {
   date?: string
   project_id?: number
-  account_group_id?: number
+  account_group_id?: number | null  // 模組改為選填，允許 null
   work_category_id?: number
   hours?: number
   description?: string
@@ -132,6 +132,35 @@ export interface DailyStats {
   normal_hours: number
   overtime_hours: number
   status: string
+}
+
+// 里程碑相關類型
+export interface Milestone {
+  id: number
+  project_id: number
+  name: string
+  start_date: string // YYYY-MM-DD
+  end_date: string // YYYY-MM-DD
+  description?: string
+  display_order: number
+  created_at: string
+  updated_at: string
+}
+
+export interface MilestoneCreate {
+  name: string
+  start_date: string
+  end_date: string
+  description?: string
+  display_order?: number
+}
+
+export interface MilestoneUpdate {
+  name?: string
+  start_date?: string
+  end_date?: string
+  description?: string
+  display_order?: number
 }
 
 // API 回應類型

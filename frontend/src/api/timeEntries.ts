@@ -25,7 +25,7 @@ export const timeEntriesApi = {
 
   // 更新工時記錄
   update: (id: number, data: TimeEntryUpdate) => {
-    return apiClient.put<TimeEntry>(`/api/time-entries/${id}`, data)
+    return apiClient.patch<TimeEntry>(`/api/time-entries/${id}`, data)
   },
 
   // 刪除工時記錄

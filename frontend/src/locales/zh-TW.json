@@ -34,7 +34,7 @@
     "title": "工時記錄",
     "date": "日期",
     "project": "專案",
-    "accountGroup": "帳組",
+    "accountGroup": "模組",
     "workCategory": "工作類別",
     "hours": "實際工時",
     "description": "工作說明",

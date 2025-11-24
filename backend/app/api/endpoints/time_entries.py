@@ -45,16 +45,18 @@ def create_time_entry(
             detail=f"Project with id {time_entry.project_id} not found",
         )
 
-    account_group = (
-        db.query(AccountGroup)
-        .filter(AccountGroup.id == time_entry.account_group_id)
-        .first()
-    )
-    if not account_group:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Account group with id {time_entry.account_group_id} not found",
+    # 模組改為選填，只有當提供時才驗證
+    if time_entry.account_group_id is not None:
+        account_group = (
+            db.query(AccountGroup)
+            .filter(AccountGroup.id == time_entry.account_group_id)
+            .first()
         )
+        if not account_group:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Account group with id {time_entry.account_group_id} not found",
+            )
 
     work_category = (
         db.query(WorkCategory)

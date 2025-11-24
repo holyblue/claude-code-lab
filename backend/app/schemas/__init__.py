@@ -47,6 +47,12 @@ from .tcs import (
     TCSDateRangeRequest,
     TCSDateRangeResponse,
 )
+from .milestone import (
+    MilestoneBase,
+    MilestoneCreate,
+    MilestoneUpdate,
+    MilestoneResponse,
+)
 
 __all__ = [
     # AccountGroup schemas
@@ -85,4 +91,9 @@ __all__ = [
     "TCSFormatResponse",
     "TCSDateRangeRequest",
     "TCSDateRangeResponse",
+    # Milestone schemas
+    "MilestoneBase",
+    "MilestoneCreate",
+    "MilestoneUpdate",
+    "MilestoneResponse",
 ]

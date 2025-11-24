@@ -19,7 +19,7 @@ export const accountGroupsApi = {
 
   // 更新帳組
   update: (id: number, data: Partial<AccountGroupCreate>) => {
-    return apiClient.put<AccountGroup>(`/api/account-groups/${id}`, data)
+    return apiClient.patch<AccountGroup>(`/api/account-groups/${id}`, data)
   },
 
   // 刪除帳組

@@ -11,6 +11,264 @@
 - 📝 備註 - 相關說明
 
 ---
+## [2025-11-24] - Bug Fix：工時記錄「模組」欄位改為選填
+
+### 🐛 問題描述
+- 新增工時記錄時，若不選擇「模組」欄位，會出現 `422 Unprocessable Entity` 或 `404 Not Found` 錯誤
+- 原因：
+  1. 前端驗證將 `account_group_id` 設為必填
+  2. 後端 API 即使 `account_group_id` 為 `None` 也會嘗試查詢驗證
+  3. 資料庫表結構中 `account_group_id` 欄位設為 `NOT NULL`
+
+### ✅ 修復內容
+
+**1. 前端表單調整：**
+- 移除 `account_group_id` 的必填驗證規則
+- 新增 `clearable` 屬性，允許清除已選擇的模組
+- 調整表單布局：專案獨立一行，模組與工作類別並列
+
+**2. 後端 API 修正：**
+- `app/api/endpoints/time_entries.py`
+  - 新增條件判斷：只有當 `account_group_id` 不為 `None` 時才進行驗證
+  - 避免查詢 `WHERE account_groups.id IS NULL` 導致 404 錯誤
+
+**3. Pydantic Schema 更新：**
+- `app/schemas/time_entry.py`
+  - 移除 `account_group_id` 的 `gt=0` 約束（會導致 `None` 值驗證失敗）
+  - 更新說明文字為「模組 ID（選填）」
+
+**4. 資料庫結構遷移：**
+- `app/models/time_entry.py`
+  - 將 `account_group_id` 改為 `nullable=True`
+- 建立遷移腳本 `migrate_account_group_optional.py`
+  - SQLite 不支援直接 `ALTER COLUMN`，採用「備份→刪除→重建→還原」策略
+  - 包含完整的資料備份與回滾機制
+  - 自動驗證遷移結果
+
+### 📊 測試驗證
+
+**新增測試案例：**
+- `test_create_time_entry_without_account_group` ✅
+  - 驗證不選擇模組時可以成功新增工時記錄
+  - 驗證回傳的 `account_group_id` 為 `None`
+
+**測試結果：**
+```
+TestTimeEntryAPI: 7 passed ✅
+- test_create_time_entry
+- test_create_time_entry_without_account_group ⭐ 新增
+- test_create_time_entry_invalid_project
+- test_list_time_entries_by_date_range
+- test_get_time_entry
+- test_update_time_entry
+- test_delete_time_entry
+
+Coverage: app/api/endpoints/time_entries.py: 45% → 88% ⬆️
+```
+
+### 📁 變更檔案
+- **前端：**
+  - `frontend/src/components/TimeEntryForm.vue` - 表單驗證與布局調整
+- **後端：**
+  - `backend/app/api/endpoints/time_entries.py` - API 驗證邏輯修正
+  - `backend/app/schemas/time_entry.py` - Schema 約束調整
+  - `backend/app/models/time_entry.py` - 模型欄位改為可空
+  - `backend/migrate_account_group_optional.py` - 資料庫遷移腳本（新增）
+- **測試：**
+  - `backend/tests/integration/test_api.py` - 新增測試案例
+
+### 🔧 資料庫遷移執行
+```bash
+cd backend
+python migrate_account_group_optional.py
+```
+- ✓ Backup created
+- ✓ Original table dropped
+- ✓ New table created (account_group_id nullable)
+- ✓ Indexes created
+- ✓ Data restored (0 records)
+- ✅ account_group_id is now nullable!
+
+### 📝 備註
+- 「模組」欄位現在為選填，符合實際業務需求
+- 前端表單新增清除按鈕，提升使用者體驗
+- 新布局：專案獨立一行更醒目，模組與工作類別並列更合理
+
+---
+## [2025-11-24] - Phase 3 進展：工時記錄核心功能完成（CRUD + 篩選）
+
+### ✅ 已完成
+
+**工時記錄模組完整實作：**
+
+1. **API 層（2 個新 API 客戶端）：**
+   - ✅ `accountGroups.ts` - 帳組 CRUD API
+     - getAll, getById, create, update, delete
+   - ✅ `workCategories.ts` - 工作類別 CRUD API
+     - getAll, getById, create, update, delete
+
+2. **狀態管理（2 個新 Pinia Store）：**
+   - ✅ `accountGroup.ts` - 帳組狀態管理（101 行）
+     - Actions: fetch, create, update, delete
+     - Getters: defaultAccountGroups, getAccountGroupById
+     - 完整錯誤處理與 loading 狀態
+   - ✅ `workCategory.ts` - 工作類別狀態管理（111 行）
+     - Actions: fetch, create, update, delete
+     - Getters: deductWorkCategories, nonDeductWorkCategories, getWorkCategoryById
+     - 區分扣抵/不扣抵類別
+
+3. **組件開發：**
+   - ✅ `TimeEntryForm.vue`（236 行）
+     - 完整的表單驗證
+     - 支援新增/編輯雙模式
+     - 動態載入選項資料（專案、帳組、工作類別）
+     - Markdown 工作說明編輯
+     - 工時驗證（0.5-24 小時，0.5 增量）
+     - 響應式設計
+
+4. **頁面重構：**
+   - ✅ `TimeEntries.vue`（353 行）- 完整工時記錄管理頁面
+     - 完整 CRUD 功能（新增、編輯、刪除）
+     - 日期範圍篩選（DateRangePicker）
+     - 專案篩選（可清除、可搜尋）
+     - 列表顯示（帶視覺化標籤）
+     - 總計工時統計（動態計算）
+     - 錯誤處理與訊息提示
+     - Loading 狀態管理
+
+### 📊 測試成果
+
+**構建測試：**
+- ✅ 構建狀態：成功
+- ✅ 構建時間：11.25 秒
+- ✅ 無 TypeScript 錯誤
+- ✅ 無 ESLint 警告
+
+**代碼統計：**
+- 新增檔案：5 個
+- 修改檔案：3 個
+- 新增代碼：829 行
+- 組件代碼：589 行（TimeEntries 353 + TimeEntryForm 236）
+- Store 代碼：212 行（accountGroup 101 + workCategory 111）
+- API 代碼：58 行
+
+**功能驗證：**
+- ✅ 工時記錄 CRUD 操作正常
+- ✅ 表單驗證生效
+- ✅ 日期範圍篩選正常
+- ✅ 專案篩選正常
+- ✅ 總計工時計算準確
+- ✅ 錯誤處理完善
+
+### 🔑 核心功能特性
+
+**工時記錄 CRUD：**
+- ✅ 新增工時記錄
+  - 對話框表單
+  - 表單驗證（必填欄位、工時範圍）
+  - 成功提示訊息
+- ✅ 編輯工時記錄
+  - 預填現有資料
+  - 支援部分欄位更新
+  - 即時更新列表
+- ✅ 刪除工時記錄
+  - 確認對話框（防誤刪）
+  - 刪除後自動刷新
+  - 成功提示訊息
+
+**列表顯示與篩選：**
+- ✅ 日期可排序（預設降序）
+- ✅ 專案顏色標籤（視覺化識別）
+- ✅ 不扣抵標籤（A08 商模、I07 休假）
+- ✅ 總計工時（動態計算）
+- ✅ 日期範圍篩選（快速切換日期）
+- ✅ 專案篩選（支援搜尋和清除）
+- ✅ 即時篩選更新
+
+**使用者體驗：**
+- ✅ Loading 狀態顯示
+- ✅ 錯誤處理與提示
+- ✅ 訊息通知（成功/錯誤）
+- ✅ 響應式設計（適配各種螢幕）
+- ✅ 空狀態提示
+- ✅ 操作確認對話框
+
+### 📁 變更檔案
+
+**新增檔案（5 個）：**
+- `frontend/src/api/accountGroups.ts` - 帳組 API 客戶端（30 行）
+- `frontend/src/api/workCategories.ts` - 工作類別 API 客戶端（30 行）
+- `frontend/src/stores/accountGroup.ts` - 帳組狀態管理（101 行）
+- `frontend/src/stores/workCategory.ts` - 工作類別狀態管理（111 行）
+- `frontend/src/components/TimeEntryForm.vue` - 工時記錄表單（236 行）
+
+**修改檔案（3 個）：**
+- `frontend/src/views/TimeEntries.vue` - 完整重構（353 行，+300 行）
+- `frontend/src/stores/index.ts` - 新增 store 匯出
+- `frontend/src/api/index.ts` - 新增 API 匯出
+
+### 📝 技術亮點
+
+**TypeScript 類型安全：**
+- 完整的類型定義（AccountGroup, WorkCategory）
+- API 響應類型安全
+- Store 狀態類型推導
+- 組件 props 類型驗證
+
+**Pinia 最佳實踐：**
+- Composition API 風格
+- 計算屬性（Getters）分類資料
+- 錯誤處理與 loading 狀態管理
+- 響應式資料更新
+
+**Element Plus 整合：**
+- 表單驗證（el-form + rules）
+- 日期選擇器（DatePicker, DateRangePicker）
+- 數字輸入（InputNumber 支援 0.5 增量）
+- 對話框（Dialog）
+- 訊息提示（Message）
+- 確認對話框（MessageBox）
+- 空狀態（Empty）
+
+**代碼組織：**
+- 清晰的組件架構
+- API 層、Store 層、View 層分離
+- 可重用的表單組件
+- 統一的錯誤處理
+
+### 🎯 Phase 3 完成度：50%
+
+**已完成（50%）：**
+- ✅ 專案初始化與架構建立（100%）
+- ✅ 核心依賴安裝與配置（100%）
+- ✅ 基礎布局與路由（100%）
+- ✅ **工時記錄功能（100%）** ⭐ 核心功能
+  - CRUD 操作完整
+  - 篩選功能完善
+  - 使用者體驗優良
+
+**待完成（50%）：**
+- [ ] 專案管理完整功能（CRUD + 核定工時追蹤）
+- [ ] 日曆視圖實作（月曆顯示、顏色標示）
+- [ ] 統計報表與圖表（ECharts 視覺化）
+- [ ] TCS 格式化輸出介面
+- [ ] 系統設定頁面（帳組、工作類別管理）
+- [ ] 單元測試（Vitest）
+
+**下一步優先任務：**
+1. 專案管理頁面（CRUD + 核定工時使用率）
+2. 日曆視圖（月曆 + 每日工時顯示）
+3. 統計報表（圖表視覺化）
+
+### 📝 備註
+
+- 工時記錄功能現已完全可用，可進行完整的 CRUD 操作
+- 表單驗證確保資料完整性
+- 篩選功能提升使用者操作效率
+- 視覺化標籤（專案顏色、不扣抵標記）提升資訊識別度
+- 下一階段將專注於專案管理與統計功能
+
+---
 ## [2025-11-17] - Phase 3 啟動：前端 Vue 3 + TypeScript 專案初始化完成
 
 ### ✅ 已完成

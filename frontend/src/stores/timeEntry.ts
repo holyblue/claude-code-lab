@@ -76,7 +76,9 @@ export const useTimeEntryStore = defineStore('timeEntry', () => {
     loading.value = true
     error.value = null
     try {
+      console.log('📡 Store: 發送 PATCH 請求，ID:', id, '資料:', data)
       const entry = await timeEntriesApi.update(id, data)
+      console.log('📡 Store: 收到回應:', entry)
       const index = timeEntries.value.findIndex((e) => e.id === id)
       if (index !== -1) {
         timeEntries.value[index] = entry
@@ -86,6 +88,7 @@ export const useTimeEntryStore = defineStore('timeEntry', () => {
       }
       return entry
     } catch (e) {
+      console.error('📡 Store: 請求失敗:', e)
       error.value = e instanceof Error ? e.message : '更新工時記錄失敗'
       throw e
     } finally {
