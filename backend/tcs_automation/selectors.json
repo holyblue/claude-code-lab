@@ -1,0 +1,21 @@
+{
+  "date_input": "txtDate",
+  "query_button": "btmQuery",
+  "save_button": "btnSave",
+  "clear_button": "input[value='清除']",
+  "add_row_button": "btnAddLine",
+  "project_code": "txtPROJ_CD",
+  "project_name_span": "spanPROJ_NME",
+  "module_code": "txtMODULE_CD",
+  "module_name_span": "spanMODULE_NME",
+  "work_item_code": "txtWORK_ITEM_CD",
+  "work_item_name_span": "spanWORK_ITEM_NME",
+  "work_category_code": "txtWORK_CATG_CD",
+  "requirement_no": "txtREQ_CD",
+  "work_hours": "txtWORK_HR",
+  "work_description": "txtWROK_DESC",
+  "progress_rate": "txtPRGRS_RATE",
+  "is_check_module": "txtIS_CHK_MODULE",
+  "actual_hours_label": "lblACTL_HR"
+}
+

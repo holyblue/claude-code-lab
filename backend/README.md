@@ -27,6 +27,7 @@ FastAPI backend for the time tracking system.
 - **日期處理**: python-dateutil 2.8.2
 - **時區支援**: pytz 2024.1
 - **檔案上傳**: python-multipart 0.0.20 ⬆️
+- **瀏覽器自動化**: Playwright 1.51.0 (用於 TCS 自動填寫)
 
 ### 依賴管理 ⚡
 - **推薦**: **uv** (10-100x faster than pip)
@@ -223,9 +224,10 @@ API 文檔可透過 Swagger UI 查看：啟動應用後訪問 `http://localhost:
 - `GET /api/stats/projects/{id}` - 獲取專案統計（使用率、超支預警）
 - `GET /api/stats/projects` - 獲取所有專案統計
 
-**TCS 格式化 (TCS Format)**
+**TCS 格式化與自動化 (TCS Format & Automation)**
 - `POST /api/tcs/format` - 格式化單日時間記錄
 - `POST /api/tcs/format/range` - 格式化日期範圍時間記錄
+- `POST /api/tcs/auto-fill` - 自動填寫工時記錄到 TCS 系統（支援 dry_run）
 
 ## 開發進度
 
@@ -261,9 +263,90 @@ API 文檔可透過 Swagger UI 查看：啟動應用後訪問 `http://localhost:
 - ⚠️ 總體覆蓋率：44% (API 層未被整合測試覆蓋)
 - 📝 BDD 測試：待實作 step definitions
 
+## TCS 自動化填寫功能 🤖
+
+### 安裝 Playwright
+
+```bash
+# 安裝 Playwright
+pip install playwright
+# 或使用 uv (推薦)
+uv pip install playwright
+
+# 安裝瀏覽器驅動
+playwright install chromium
+```
+
+### 使用方式
+
+#### 1. API 方式（推薦用於前端整合）
+
+```bash
+# DRY RUN 模式（預設，安全）- 不會真正儲存
+curl -X POST "http://localhost:8000/api/tcs/auto-fill" \
+  -H "Content-Type: application/json" \
+  -d '{"date": "2025-11-24"}'
+
+# 真正寫入模式（需明確指定）
+curl -X POST "http://localhost:8000/api/tcs/auto-fill" \
+  -H "Content-Type: application/json" \
+  -d '{"date": "2025-11-24", "dry_run": false}'
+```
+
+#### 2. 手動測試腳本
+
+```bash
+cd backend/tcs_automation
+
+# 安全模式（預設，只預覽不儲存）
+python test_manual.py --date 2025-11-24
+
+# 真正寫入（需明確指定並確認）
+python test_manual.py --date 2025-11-24 --no-dry-run
+```
+
+### ⚠️ 重要安全提示
+
+1. **測試絕不碰真實 TCS 系統**
+   - 所有自動化測試（pytest）完全使用 Mock
+   - 不會啟動真實瀏覽器
+   - 不會連接 TCS 系統
+
+2. **預設保護機制**
+   - API 預設 `dry_run=true`
+   - 手動腳本預設 `dry_run=true`
+   - 需明確關閉才會真正寫入
+
+3. **測試執行**
+   ```bash
+   # 安全測試（使用 Mock）
+   pytest tests/unit/test_tcs_automation.py -v
+   pytest tests/integration/test_tcs_auto_fill.py -v
+   
+   # 只執行 mock 測試（推薦）
+   pytest -m mock
+   
+   # 手動測試需明確指定（不推薦在 CI 中執行）
+   pytest -m manual
+   ```
+
+### 功能說明
+
+- **自動連接**: 使用 Windows 整合驗證自動登入 TCS
+- **Frame 處理**: 自動切換到正確的 frame（mainFrame）
+- **資料驗證**: 自動驗證專案代碼、模組、工作類別
+- **AJAX 等待**: 自動等待欄位驗證完成
+- **錯誤處理**: 捕捉並回報 TCS 系統錯誤訊息
+- **工時限制**: 自動檢查總工時不超過 18 小時
+
+### 詳細文檔
+
+請參閱 [`tcs_automation/README.md`](./tcs_automation/README.md) 獲取更多詳細資訊。
+
 ## 參考文件
 
 - [FastAPI 官方文檔](https://fastapi.tiangolo.com/)
 - [SQLAlchemy 官方文檔](https://docs.sqlalchemy.org/)
 - [pytest-bdd 官方文檔](https://pytest-bdd.readthedocs.io/)
 - [Gherkin 語法參考](https://cucumber.io/docs/gherkin/reference/)
+- [Playwright Python 文檔](https://playwright.dev/python/)

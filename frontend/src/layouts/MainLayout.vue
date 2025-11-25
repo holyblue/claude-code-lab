@@ -84,6 +84,9 @@
         </router-view>
       </el-main>
     </el-container>
+
+    <!-- TCS 同步浮動按鈕 -->
+    <TcsSyncButton />
   </el-container>
 </template>
 
@@ -103,6 +106,7 @@ import {
   Moon,
   Sunny,
 } from '@element-plus/icons-vue'
+import TcsSyncButton from '../components/TcsSyncButton.vue'
 
 const route = useRoute()
 const { t, locale } = useI18n()

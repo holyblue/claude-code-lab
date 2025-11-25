@@ -1,0 +1,709 @@
+<body>
+    <form name="form1" method="post" action="./TCSInput.aspx" id="form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM5OTg2NTEwMA9kFgICAQ9kFhACBQ8PFgIeBFRleHQFBTE1MjEyZGQCBw8PFgIfAAUJ5L2V5p2+56mOZGQCCw8PFgIfAAUEMTgyNWRkAg0PDxYCHwAFA08xOGRkAg8PDxYCHwAFFeaVuOaTmuaZuuiDveaHieeUqOenkWRkAhUPD2QWBB4Gb25ibHVyBRR0eHREYXRlX29uYmx1cih0aGlzKR4Hb25mb2N1cwUOZ2V0Rm9jdXModGhpcylkAh0PDxYCHwAFAzcuNWRkAiEPDxYCHwAFAzcuNWRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYCBQdidG5MZWZ0BQhidG5SaWdodJrniP5cib3CNpoCaz1b4v6C1Kuv9g14SzF4JIMc6Jf9">
+</div>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C571F7F9">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAA9iVsOOyPp4f58yjlqAsn8JlliAPKY+KvRmniYVjNuQiA1nqPlRawBatZnIFgww3mdCZOc+TGA4CrrdiJVjmLCmy1OnD6RkE8k+RY226j9SShiTojH+ZOWkzVQRhKyim+EP7JWczyi9D2X/yHxZIkVKqKrqIgNMxslhksiWWLKrPkBQL1/zW/bDDst0dGdkzBmacNfrKC2vnK4WIMLDXJYKCpKCplm7DArevCeJ/LHAbPLvr4oW2LPWBXbPst+y2PoVbS7APj6mfWcKTY3+rJvBZm4JwN6sngOzNoNs8XHP2X39n0Ev6Dkc06WN2KBTVLPoYmQDPDBKtLkBbOkiZqMbst5WcRryFRgK1Cti3EtgfA==">
+</div>
+        <!-- InstanceBeginEditable name="EditRegion3" -->
+
+        <table width="100%" border="0" cellspacing="0">
+            <tbody><tr>
+                <td height="25" class="MainTitle" style="border: 0;">
+                    <span class="main_title" ondblclick="document.getElementById('CommonHidden').style.display=''">&nbsp;&nbsp;日誌輸入</span>
+                </td>
+            </tr>
+        </tbody></table>
+        <div>
+            <br>
+            <table width="100%" border="0" cellspacing="0">
+                <tbody><tr>
+                    <td width="1%"></td>
+                    <td>
+                        <table width="70%" border="0" cellspacing="0">
+                            <tbody><tr>
+                                <td colspan="2">
+                                    <input type="submit" name="btnSave" value="儲存" onclick="return checkData();" id="btnSave" class="cnnFormButton">
+                                    <input type="button" onclick="cleatAllItem()" value="清除" class="cnnFormButton">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">
+                                    <span id="Label1" style="display:inline-block;font-weight:bold;width:40px;">員工：</span>
+                                    <span id="lblUSERID">15212</span>
+                                    <span id="lblUSERNME">何松穎</span>
+                                </td>
+
+                                <td style="width: 20%">
+                                    <span id="Label3" style="font-weight:bold;">部門：</span>
+                                    
+                                    <span id="lblDeptCD">O18</span>
+                                    <span id="lblDeptNME">數據智能應用科</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span id="Label4" style="display:inline-block;font-weight:bold;width:47px;">日期：</span>
+                                    <input type="image" name="btnLeft" id="btnLeft" src="../Images/icon_arrowl.gif" style="border-width:0px;">
+                                    <input name="txtDate" type="text" value="20251124" maxlength="8" id="txtDate" onblur="txtDate_onblur(this)" onfocus="getFocus(this)" style="width:84px;">
+                                    <input type="image" name="btnRight" id="btnRight" src="../Images/icon_arrowr.gif" style="border-width:0px;">
+                                    <input type="submit" name="btmQuery" value="查詢" id="btmQuery" class="cnnFormButton">
+                                    <span id="spanMSG" style="font-weight: bold"></span>
+                                </td>
+                                <td></td>
+
+                            </tr>
+                        </tbody></table>
+
+                        <br>
+                        &nbsp;&nbsp;&nbsp;
+            <span id="Label5" style="font-weight:bold;">應工作時數：</span>
+                        <span id="lblREQ_HR" style="font-weight:bold;">7.5</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="Label6" style="font-weight:bold;">實際工作時數：</span>
+                        <span id="lblACTL_HR" style="font-weight:bold;">7.5</span>
+                        <br>
+
+                        <table id="tblInput" border="0" style="width:99%;">
+	<tbody><tr>
+		<th class="tr_head" style="width:14%;">專案名稱</th><th class="tr_head" style="width:14%;">模組</th><th class="tr_head" style="width:14%;">工作類別</th><th class="tr_head" style="width:15%;">需求單號</th><th class="tr_head" style="width:5%;">實際工時</th><th class="tr_head" style="width:29%;">工作說明</th><th class="tr_head" style="width:5%;">完成%</th><th class="tr_head" style="width:4%;">刪除</th>
+	</tr><tr height="50" valign="top" class="tr_detail">
+		<td><input name="txtPROJ_CD" onblur="PROJ_CD_OnBlur(&quot;0&quot;,this);" id="txtPROJ_CD0" type="text" value="商2025智001" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢專案名稱" onclick="openWindow(&quot;0&quot;,&quot;Project&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span name="spanPROJ_NME" id="spanPROJ_NME0">數據智能應用科商模</span><input name="txtIS_CHK_MODULE" id="txtIS_CHK_MODULE0" type="text" value="Y" style="display:none"></td><td><input name="txtMODULE_CD" onblur="MODULE_CD_OnBlur(&quot;0&quot;,this);" id="txtMODULE_CD0" type="text" value="A00" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢模組名稱" onclick="openWindow(&quot;0&quot;,&quot;Module&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanMODULE_NME0">中租全體</span></td><td><input name="txtWORK_ITEM_CD" onblur="WORK_ITEM_CD_OnBlur(&quot;0&quot;,this);" id="txtWORK_ITEM_CD0" type="text" value="A07" maxlength="20" size="10" onfocus="getFocus(this)"><input name="txtWORK_CATG_CD" id="txtWORK_CATG_CD0" type="hidden" value="A" maxlength="20" size="10" onblur="getBlur(this)" onfocus="getFocus(this)"><img alt="查詢工作類別" onclick="openWindow(&quot;0&quot;,&quot;Item&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanWORK_ITEM_NME0">其它</span></td><td><input id="txtREQ_CD0" name="txtREQ_CD" type="text" value="" size="18" onblur="getBlur(this)" onfocus="getFocus(this)"></td><td><input name="txtWORK_HR" id="txtWORK_HR0" type="text" value="7.5" size="4" maxlength="5" onblur="WORK_HR_OnBlur(&quot;0&quot;,this)" onfocus="getFocus(this)" class="amount"></td><td><textarea name="txtWROK_DESC" id="txtWROK_DESC" cols="40" rows="5" onblur="getBlur(this)" onfocus="getFocus(this)">- [x] 協助耿甫排除YuliLiu【劉思辰】無法撥號問題(耳麥接觸問題)
+- [x] 語音質檢軟體架構規劃
+- [x] GC回撥功能找Kalus討論</textarea></td><td><input name="txtPRGRS_RATE" class="amount" id="txtPRGRS_RATE0" type="text" maxlength="6" value="0" size="4" onblur="PRGRS_RATE_OnBlur(&quot;0&quot;,this)" onfocus="getFocus(this)"></td><td align="center"><img src="../images/icon_delete_b.gif" alt="刪除本行" name="imgDelete" width="16" height="16" border="0" style="cursor:hand" onclick="delete_onclick(this)"></td>
+	</tr><tr height="50" valign="top" class="tr_detail">
+		<td><input name="txtPROJ_CD" onblur="PROJ_CD_OnBlur(&quot;1&quot;,this);" id="txtPROJ_CD1" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢專案名稱" onclick="openWindow(&quot;1&quot;,&quot;Project&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span name="spanPROJ_NME" id="spanPROJ_NME1"></span><input name="txtIS_CHK_MODULE" id="txtIS_CHK_MODULE1" type="text" value="" style="display:none"></td><td><input name="txtMODULE_CD" onblur="MODULE_CD_OnBlur(&quot;1&quot;,this);" id="txtMODULE_CD1" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢模組名稱" onclick="openWindow(&quot;1&quot;,&quot;Module&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanMODULE_NME1"></span></td><td><input name="txtWORK_ITEM_CD" onblur="WORK_ITEM_CD_OnBlur(&quot;1&quot;,this);" id="txtWORK_ITEM_CD1" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><input name="txtWORK_CATG_CD" id="txtWORK_CATG_CD1" type="hidden" value="" maxlength="20" size="10" onblur="getBlur(this)" onfocus="getFocus(this)"><img alt="查詢工作類別" onclick="openWindow(&quot;1&quot;,&quot;Item&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanWORK_ITEM_NME1"></span></td><td><input id="txtREQ_CD1" name="txtREQ_CD" type="text" value="" size="18" onblur="getBlur(this)" onfocus="getFocus(this)"></td><td><input name="txtWORK_HR" id="txtWORK_HR1" type="text" value="" size="4" maxlength="5" onblur="WORK_HR_OnBlur(&quot;1&quot;,this)" onfocus="getFocus(this)" class="amount"></td><td><textarea name="txtWROK_DESC" id="txtWROK_DESC" cols="40" rows="5" onblur="getBlur(this)" onfocus="getFocus(this)"></textarea></td><td><input name="txtPRGRS_RATE" class="amount" id="txtPRGRS_RATE1" type="text" maxlength="6" value="" size="4" onblur="PRGRS_RATE_OnBlur(&quot;1&quot;,this)" onfocus="getFocus(this)"></td><td align="center"><img src="../images/icon_delete_b.gif" alt="刪除本行" name="imgDelete" width="16" height="16" border="0" style="cursor:hand" onclick="delete_onclick(this)"></td>
+	</tr><tr height="50" valign="top" class="tr_detail">
+		<td><input name="txtPROJ_CD" onblur="PROJ_CD_OnBlur(&quot;2&quot;,this);" id="txtPROJ_CD2" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢專案名稱" onclick="openWindow(&quot;2&quot;,&quot;Project&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span name="spanPROJ_NME" id="spanPROJ_NME2"></span><input name="txtIS_CHK_MODULE" id="txtIS_CHK_MODULE2" type="text" value="" style="display:none"></td><td><input name="txtMODULE_CD" onblur="MODULE_CD_OnBlur(&quot;2&quot;,this);" id="txtMODULE_CD2" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢模組名稱" onclick="openWindow(&quot;2&quot;,&quot;Module&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanMODULE_NME2"></span></td><td><input name="txtWORK_ITEM_CD" onblur="WORK_ITEM_CD_OnBlur(&quot;2&quot;,this);" id="txtWORK_ITEM_CD2" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><input name="txtWORK_CATG_CD" id="txtWORK_CATG_CD2" type="hidden" value="" maxlength="20" size="10" onblur="getBlur(this)" onfocus="getFocus(this)"><img alt="查詢工作類別" onclick="openWindow(&quot;2&quot;,&quot;Item&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanWORK_ITEM_NME2"></span></td><td><input id="txtREQ_CD2" name="txtREQ_CD" type="text" value="" size="18" onblur="getBlur(this)" onfocus="getFocus(this)"></td><td><input name="txtWORK_HR" id="txtWORK_HR2" type="text" value="" size="4" maxlength="5" onblur="WORK_HR_OnBlur(&quot;2&quot;,this)" onfocus="getFocus(this)" class="amount"></td><td><textarea name="txtWROK_DESC" id="txtWROK_DESC" cols="40" rows="5" onblur="getBlur(this)" onfocus="getFocus(this)"></textarea></td><td><input name="txtPRGRS_RATE" class="amount" id="txtPRGRS_RATE2" type="text" maxlength="6" value="" size="4" onblur="PRGRS_RATE_OnBlur(&quot;2&quot;,this)" onfocus="getFocus(this)"></td><td align="center"><img src="../images/icon_delete_b.gif" alt="刪除本行" name="imgDelete" width="16" height="16" border="0" style="cursor:hand" onclick="delete_onclick(this)"></td>
+	</tr><tr height="50" valign="top" class="tr_detail">
+		<td><input name="txtPROJ_CD" onblur="PROJ_CD_OnBlur(&quot;3&quot;,this);" id="txtPROJ_CD3" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢專案名稱" onclick="openWindow(&quot;3&quot;,&quot;Project&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span name="spanPROJ_NME" id="spanPROJ_NME3"></span><input name="txtIS_CHK_MODULE" id="txtIS_CHK_MODULE3" type="text" value="" style="display:none"></td><td><input name="txtMODULE_CD" onblur="MODULE_CD_OnBlur(&quot;3&quot;,this);" id="txtMODULE_CD3" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢模組名稱" onclick="openWindow(&quot;3&quot;,&quot;Module&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanMODULE_NME3"></span></td><td><input name="txtWORK_ITEM_CD" onblur="WORK_ITEM_CD_OnBlur(&quot;3&quot;,this);" id="txtWORK_ITEM_CD3" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><input name="txtWORK_CATG_CD" id="txtWORK_CATG_CD3" type="hidden" value="" maxlength="20" size="10" onblur="getBlur(this)" onfocus="getFocus(this)"><img alt="查詢工作類別" onclick="openWindow(&quot;3&quot;,&quot;Item&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanWORK_ITEM_NME3"></span></td><td><input id="txtREQ_CD3" name="txtREQ_CD" type="text" value="" size="18" onblur="getBlur(this)" onfocus="getFocus(this)"></td><td><input name="txtWORK_HR" id="txtWORK_HR3" type="text" value="" size="4" maxlength="5" onblur="WORK_HR_OnBlur(&quot;3&quot;,this)" onfocus="getFocus(this)" class="amount"></td><td><textarea name="txtWROK_DESC" id="txtWROK_DESC" cols="40" rows="5" onblur="getBlur(this)" onfocus="getFocus(this)"></textarea></td><td><input name="txtPRGRS_RATE" class="amount" id="txtPRGRS_RATE3" type="text" maxlength="6" value="" size="4" onblur="PRGRS_RATE_OnBlur(&quot;3&quot;,this)" onfocus="getFocus(this)"></td><td align="center"><img src="../images/icon_delete_b.gif" alt="刪除本行" name="imgDelete" width="16" height="16" border="0" style="cursor:hand" onclick="delete_onclick(this)"></td>
+	</tr><tr height="50" valign="top" class="tr_detail">
+		<td><input name="txtPROJ_CD" onblur="PROJ_CD_OnBlur(&quot;4&quot;,this);" id="txtPROJ_CD4" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢專案名稱" onclick="openWindow(&quot;4&quot;,&quot;Project&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span name="spanPROJ_NME" id="spanPROJ_NME4"></span><input name="txtIS_CHK_MODULE" id="txtIS_CHK_MODULE4" type="text" value="" style="display:none"></td><td><input name="txtMODULE_CD" onblur="MODULE_CD_OnBlur(&quot;4&quot;,this);" id="txtMODULE_CD4" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><img alt="查詢模組名稱" onclick="openWindow(&quot;4&quot;,&quot;Module&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanMODULE_NME4"></span></td><td><input name="txtWORK_ITEM_CD" onblur="WORK_ITEM_CD_OnBlur(&quot;4&quot;,this);" id="txtWORK_ITEM_CD4" type="text" value="" maxlength="20" size="10" onfocus="getFocus(this)"><input name="txtWORK_CATG_CD" id="txtWORK_CATG_CD4" type="hidden" value="" maxlength="20" size="10" onblur="getBlur(this)" onfocus="getFocus(this)"><img alt="查詢工作類別" onclick="openWindow(&quot;4&quot;,&quot;Item&quot;)" src="../images/icon_search_2.gif" width="18" height="18" style="cursor:hand"><br><span id="spanWORK_ITEM_NME4"></span></td><td><input id="txtREQ_CD4" name="txtREQ_CD" type="text" value="" size="18" onblur="getBlur(this)" onfocus="getFocus(this)"></td><td><input name="txtWORK_HR" id="txtWORK_HR4" type="text" value="" size="4" maxlength="5" onblur="WORK_HR_OnBlur(&quot;4&quot;,this)" onfocus="getFocus(this)" class="amount"></td><td><textarea name="txtWROK_DESC" id="txtWROK_DESC" cols="40" rows="5" onblur="getBlur(this)" onfocus="getFocus(this)"></textarea></td><td><input name="txtPRGRS_RATE" class="amount" id="txtPRGRS_RATE4" type="text" maxlength="6" value="" size="4" onblur="PRGRS_RATE_OnBlur(&quot;4&quot;,this)" onfocus="getFocus(this)"></td><td align="center"><img src="../images/icon_delete_b.gif" alt="刪除本行" name="imgDelete" width="16" height="16" border="0" style="cursor:hand" onclick="delete_onclick(this)"></td>
+	</tr>
+</tbody></table>
+
+                        <img id="btnAddLine" alt="新增一列" onmouseout="show_icon('../images/icon_add_b.gif')" onmouseover="show_icon('../images/icon_addline_r.gif')" src="../images/icon_add_b.gif" style="cursor: hand" onclick="addRow()">新增一列
+            <br>
+                        <!-- 不使用了 2007/07/16
+            <div id="divHidden" style="display:none">
+                專案名稱<input name="txtU_PROJ_CD" type="text" id="txtU_PROJ_CD" style="width:750px;" /><br />
+                模　　組<input name="txtU_MODULE_CD" type="text" id="txtU_MODULE_CD" style="width:750px;" /><br />
+                工作項目<input name="txtU_WORK_ITEM_CD" type="text" id="txtU_WORK_ITEM_CD" style="width:750px;" /><br />
+                工作類別<input name="txtU_WORK_CATG_CD" type="text" id="txtU_WORK_CATG_CD" style="width:750px;" /><br />
+                需求單號<input name="txtU_REQ_CD" type="text" id="txtU_REQ_CD" style="width:750px;" /><br />
+                實際工時<input name="txtU_WORK_HR" type="text" id="txtU_WORK_HR" style="width:750px;" /><br />
+                工作說明<input name="txtU_WROK_DESC" type="text" id="txtU_WROK_DESC" style="width:750px;" /><br />
+                完　　成<input name="txtU_PRGRS_RATE" type="text" id="txtU_PRGRS_RATE" style="width:750px;" /><br />
+            </div> -->
+                    </td>
+                </tr>
+            </tbody></table>
+
+        </div>
+        <div id="CommonHidden" style="display: none">
+            <br>
+            <span style="font-size: small">資料修改&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;系統 Bug&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;系統未設計&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;人為作業因素&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;人員組織異動&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                權限設定&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                Bug修改&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                Enhance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                資料下載&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+
+                格式:[資料修改_人為作業因素_審查]<br>
+            </span>
+            <input name="SYSDT" type="text" value="20251124" id="SYSDT">系統日期
+            
+            
+        </div>
+    </form>
+
+
+
+
+<script language="javascript" type="text/javascript">
+
+    var strPrefix = "&^&";//定義分隔符號
+    var strMSG = "";
+
+    //顯示儲存成功或是相關系統訊息
+    if (strMSG != "") {
+        alert(strMSG)
+    }
+
+    //明細刪除按鈕
+    function delete_onclick(objDel) {
+        toDelLine(objDel);
+        countTotal();
+    }
+
+    //[日期] 欄位 的 OnBlur 事件
+    function txtDate_onblur(objThis) {
+        getBlur(objThis);
+        //檢查日期輸入是否正確
+        if (document.all['txtDate'].value != "") {
+            if (isDate(document.all['txtDate']) == false) {
+                AlertFoucs(objThis, '日期格式輸入錯誤!!');
+                document.all['txtDate'].select();
+            }
+        }
+    }
+
+
+
+    //[清除]按鈕 onClick 事件
+    function cleatAllItem() {
+        document.all['lblACTL_HR'].innerText = "0";
+        document.all.spanMSG.innerHTML = "";
+        var objPROJCD = document.all.txtPROJ_CD;
+        var cnt;
+        for (cnt = 0; cnt < objPROJCD.length; cnt++) {
+            document.all['txtPROJ_CD'][cnt].value = "";
+            document.all['txtMODULE_CD'][cnt].value = "";
+            document.all['txtWORK_ITEM_CD'][cnt].value = "";
+            document.all['txtWORK_CATG_CD'][cnt].value = "";
+            document.all['txtREQ_CD'][cnt].value = "";
+            document.all['txtWORK_HR'][cnt].value = "";
+            document.all['txtWROK_DESC'][cnt].value = "";
+            document.all['txtPRGRS_RATE'][cnt].value = "";
+            document.all['txtIS_CHK_MODULE'][cnt].value = "";
+            var strPosi = document.all['txtPROJ_CD'][cnt].id.substr(10, document.all['txtPROJ_CD'][cnt].id.length);
+            document.all['spanPROJ_NME' + strPosi].innerText = "";
+            document.all['spanMODULE_NME' + strPosi].innerText = "";
+            document.all['spanWORK_ITEM_NME' + strPosi].innerText = "";
+
+        }
+    }
+
+    //依照畫面輸入的[實際工時]計算[實際工作時數]
+    //以[專案代碼]欄位判斷畫面有幾列，再以[專案名稱]決定有效計算列數
+    function countTotal() {
+        var objPROJCD = document.all.txtPROJ_CD;
+        if (!objPROJCD) { return; }
+        var cnt;
+        var dblTotalHR = parseFloat(0.0);
+        var dblWORKHR = parseFloat(0.0);
+        for (cnt = 0; cnt < objPROJCD.length; cnt++) {
+            var strPosi = document.all['txtPROJ_CD'][cnt].id.substr(10, document.all['txtPROJ_CD'][cnt].id.length);
+            if (document.all['spanPROJ_NME' + strPosi].innerText != "") {
+                dblWORKHR = document.all['txtWORK_HR'][cnt].value;
+                if (dblWORKHR != "") {
+                    dblTotalHR = parseFloat(dblTotalHR) + parseFloat(dblWORKHR);
+                    dblTotalHR = Math.round(dblTotalHR * 100)
+                    dblTotalHR = dblTotalHR / 100
+                }
+            }
+        }
+        //實際工作時數
+        document.all['lblACTL_HR'].innerText = String(dblTotalHR);
+    }
+
+    //[實際工時] 欄位 的 OnBlur 事件
+    //      1.恢復欄位 style 設定
+    //      2.輸入數字判斷
+    //      3.計算[實際工作時數]
+    function WORK_HR_OnBlur(strRow, objThis) {
+        getBlur(objThis);
+        var WORK_HR = document.all['txtWORK_HR' + strRow].value;
+        if (WORK_HR != "" && IsNumber(WORK_HR) == false) {
+            AlertFoucs(objThis, '[實際工時] 請輸入數字!!');
+            objThis.select();
+            return;
+        } else {
+            document.all['txtWORK_HR' + strRow].value = Math.round(WORK_HR * 100) / 100
+        }
+
+        countTotal();//計算[實際工作時數]
+    }
+
+    //[完成 %] 欄位 的 OnBlur 事件
+    //      1.恢復欄位 style 設定
+    //      2.輸入數字判斷
+    function PRGRS_RATE_OnBlur(strRow, objThis) {
+        getBlur(objThis);
+        var PRGRS_RATE = document.all['txtPRGRS_RATE' + strRow].value;
+        if (PRGRS_RATE != "" && IsNumber(PRGRS_RATE) == false) {
+            AlertFoucs(objThis, '[完成 %] 請輸入數字!!');
+            objThis.select();
+            return;
+        }
+    }
+
+    //[專案代碼] 欄位 的 OnBlur 事件
+    //      1.恢復欄位 style 設定
+    //      2.依照輸入的專案代碼帶回專案名稱
+    function PROJ_CD_OnBlur(strRow, objThis) {
+        getBlur(objThis);
+        objThis.value = objThis.value.toUpperCase();
+        queryFieldData(strRow, 'getPROJNAME');
+    }
+
+    //[模組代碼] 欄位 的 OnBlur 事件
+    //      1.恢復欄位 style 設定
+    //      2.依照輸入的模組代碼帶回模組名稱
+    function MODULE_CD_OnBlur(strRow, objThis) {
+        getBlur(objThis);
+        objThis.value = objThis.value.toUpperCase();
+        queryFieldData(strRow, 'getMODULENAME');
+    }
+
+    //[工作項目代碼] 欄位 的 OnBlur 事件
+    //      1.恢復欄位 style 設定
+    //      2.依照輸入的工作項目代碼帶回工作項目名稱
+    function WORK_ITEM_CD_OnBlur(strRow, objThis) {
+        getBlur(objThis);
+        objThis.value = objThis.value.toUpperCase();
+        queryFieldData(strRow, 'getITEMNAME');
+    }
+
+    //依照 執行 Method 透過 HTTP Request 至 Server 端取回查詢結果 XML 文件
+    function queryFieldData(strRow, strExecMethod) {
+        var arrItem;
+        var strExecuteFunction = "";
+        var strKeyValue = "";
+        var strPROJ_CD = "";
+        switch (strExecMethod) {
+            case "getPROJNAME"://查詢專案名稱
+                strKeyValue = document.all['txtPROJ_CD' + strRow].value;
+                arrItem = new Array(document.all['txtPROJ_CD' + strRow].value);
+                strExecuteFunction = "setProjName(strRow,objXML,'" + strKeyValue + "');";
+                break;
+            case "getMODULENAME": //查詢模組名稱
+                strKeyValue = document.all['txtMODULE_CD' + strRow].value;
+                strPROJ_CD = document.all['txtPROJ_CD' + strRow].value;
+                strPROJ_IS_CHK_MODULE = document.all['txtIS_CHK_MODULE' + strRow].value;
+                arrItem = new Array(strKeyValue, strPROJ_CD);
+                strExecuteFunction = "setModuleName(strRow,objXML,'" + strPROJ_CD + "','" + strKeyValue + "','" + strPROJ_IS_CHK_MODULE + "');";
+                break;
+            case "getITEMNAME"://查詢工作項目名稱
+                strKeyValue = document.all['txtWORK_ITEM_CD' + strRow].value;
+                arrItem = new Array(strKeyValue, document.all['txtPROJ_CD' + strRow].value);
+                strExecuteFunction = "setItemName(strRow,objXML,'" + strKeyValue + "');";
+                break;
+            case "getCheckData"://檢核儲存時，專案、模組、工作項目是否都是有效值
+                strKeyValue = strRow[0];
+                arrItem = new Array(strKeyValue, strRow[1], strRow[2]);
+                //strExecuteFunction = "getCheckDataResult(objXML)";
+                break;
+        }
+        //執行 HTTP Request 公用程式至 Server 取資料       
+        if (strKeyValue != "") {
+            var objXML = execServerFunction(strExecMethod, arrItem);
+            try {
+                objXML = parseXML(objXML);
+            } catch (e) { }   
+        }
+        //將取回 XML 文件放置於適當的欄位中
+        eval(strExecuteFunction);
+        if (strExecMethod == "getCheckData") {
+            return getCheckDataResult(objXML)
+        }
+
+
+
+    }
+    //透過HTTP Request 將結果回傳至前端作為儲存檢核判斷資料
+    function getCheckDataResult(objXML) {
+        var PROJ_NME = "";
+        var MODULE_NME = "";
+        var WORK_ITEM_NME = "";
+        if (objXML != null) {
+            PROJ_NME = getValueFromXML(objXML, "PROJ_NME");
+            MODULE_NME = getValueFromXML(objXML, "MODULE_NME");
+            WORK_ITEM_NME = getValueFromXML(objXML, "WORK_ITEM_NME");
+        }
+
+        var result = new Array(PROJ_NME, MODULE_NME, WORK_ITEM_NME);
+        return result
+    }
+
+
+
+    //[工作類別代碼] onBlur 透過 HTTP Request 將查詢結果解析至畫面的處理程式
+    function setItemName(strRow, objXML, KeyValue) {
+        var strMODULE_NME = "";
+        var strWORK_CATG_CD = "";
+        if (objXML != null) {
+            strMODULE_NME = getValueFromXML(objXML, "WORK_ITEM_NME")
+            strWORK_CATG_CD = getValueFromXML(objXML, "WORK_CATG_CD");
+
+        } else {
+            strMODULE_NME = "";
+            strWORK_CATG_CD = "";
+        }
+        //document.all['spanWORK_ITEM_NME'+strRow].innerText = strMODULE_NME;
+        //document.all['txtWORK_CATG_CD' + strRow].value = strWORK_CATG_CD;
+
+        document.all['spanWORK_ITEM_NME' + strRow].innerHTML = strMODULE_NME;
+        document.all['txtWORK_CATG_CD' + strRow].value = strWORK_CATG_CD;
+        if (KeyValue != '' && strMODULE_NME == '') {
+            document.all['txtWORK_CATG_CD' + strRow].select();
+            document.all['txtWORK_CATG_CD' + strRow].focus();
+            strMODULE_NME = "<font color='red'><b>(工作類別輸入錯誤!)<b></font>";
+            document.all['spanWORK_ITEM_NME' + strRow].innerHTML = strMODULE_NME;
+            return false;
+        }
+
+
+    }
+
+    //[模組代碼] onBlur 透過 HTTP Request 將查詢結果解析至畫面的處理程式
+    function setModuleName(strRow, objXML, strPROJ_CD, KeyValue, strPROJ_IS_CHK_MODULE) {
+        var strMODULE_NME = "";
+        if (objXML != null) {
+            strMODULE_NME = getValueFromXML(objXML, "MODULE_NME");
+        } else {
+            strMODULE_NME = "";
+        }
+
+        //if (strPROJ_CD == 'SOC' || strPROJ_CD == 'ADM' || strPROJ_CD == 'SR' || strPROJ_CD == 'GA' || strPROJ_CD == 'MA') {
+        //20200217-調整參考PROJ Table註記來檢核
+        //if (strPROJ_CD == 'SOC' || strPROJ_CD == 'ADM' || strPROJ_CD == 'SR' || strPROJ_CD == 'GA' || strPROJ_CD == 'MA' || strPROJ_CD == 'SOC-SP1' || strPROJ_CD == 'SR-SP2-DBA' || strPROJ_CD == 'SR-SP1') {
+
+        document.all['spanMODULE_NME' + strRow].innerHTML = strMODULE_NME;
+        if (strPROJ_CD == 'GA' || strPROJ_IS_CHK_MODULE == 'Y') {
+            if (KeyValue != '' && strMODULE_NME == '') {
+                document.all['txtMODULE_CD' + strRow].select();
+                document.all['txtMODULE_CD' + strRow].focus();
+                strMODULE_NME = "<font color='red'><b>(模組輸入錯誤!)<b></font>";
+                document.all['spanMODULE_NME' + strRow].innerHTML = strMODULE_NME;
+            }
+        }
+
+    }
+
+    //[專案代碼] onBlur 透過 HTTP Request 將查詢結果解析至畫面的處理程式
+    function setProjName(strRow, objXML, KeyValue) {
+        var strPROJ_NME = "";
+        var strIS_CHK_MODULE = "";
+        var strOrgValue = document.all['spanPROJ_NME' + strRow].innerText;
+        if (objXML != null) {
+            
+            strPROJ_NME = getValueFromXML(objXML, "PROJ_NME");
+            strIS_CHK_MODULE = getValueFromXML(objXML, "IS_CHK_MODULE");
+        } else {
+            strPROJ_NME = "";
+            strIS_CHK_MODULE = "";
+        }
+
+        if (KeyValue != '' && strPROJ_NME == '') {
+            document.all['txtPROJ_CD' + strRow].select();
+            document.all['txtPROJ_CD' + strRow].focus();
+            strPROJ_NME = "<font color='red'><b>(專案輸入錯誤!)<b></font>";
+            document.all['spanPROJ_NME' + strRow].innerHTML = strPROJ_NME;
+           
+        }
+
+
+        document.all['spanPROJ_NME' + strRow].innerHTML = strPROJ_NME;
+        document.all['txtIS_CHK_MODULE' + strRow].value = strIS_CHK_MODULE;
+        //若是變更專案帶碼則清除[模組]、[工作類別]內容
+        if (strOrgValue != strPROJ_NME) {
+            document.all['txtWORK_CATG_CD' + strRow].value = "";
+            document.all['txtWORK_ITEM_CD' + strRow].value = "";
+            document.all['spanWORK_ITEM_NME' + strRow].innerText = "";
+            document.all['txtMODULE_CD' + strRow].value = "";
+            document.all['spanMODULE_NME' + strRow].innerText = "";
+        }
+    }
+
+    //點選查詢畫面後，將查詢結果依照strExecMethod分派不同程式解析
+    function parseRtnData(strExecMethod, strRow, arrData) {
+        switch (strExecMethod) {
+            case "Project":
+                setProjectData(strRow, arrData);
+                break;
+            case "Module":
+                setModuleData(strRow, arrData);
+                break;
+            case "Item":
+                setItemData(strRow, arrData);
+                break;
+        }
+    }
+
+    //點選[查詢工作類別]畫面後將回傳的XML文件解析至畫面的處理程式
+    function setItemData(strRow, arrData) {
+        document.all['txtWORK_CATG_CD' + strRow].value = arrData[0];
+        document.all['txtWORK_ITEM_CD' + strRow].value = arrData[1];
+        document.all['spanWORK_ITEM_NME' + strRow].innerText = arrData[2];
+    }
+
+    //點選[查詢模組名稱]畫面後將回傳的XML文件解析至畫面的處理程式
+    function setModuleData(strRow, arrData) {
+        document.all['txtMODULE_CD' + strRow].value = arrData[0];
+        document.all['spanMODULE_NME' + strRow].innerText = arrData[1];
+    }
+
+    //點選[查詢專案名稱]畫面後將回傳的XML文件解析至畫面的處理程式
+    function setProjectData(strRow, arrData) {
+        var strOrgValue = document.all['txtPROJ_CD' + strRow].value;
+        document.all['txtPROJ_CD' + strRow].value = arrData[0];
+        document.all['spanPROJ_NME' + strRow].innerText = arrData[1];
+        document.all['txtIS_CHK_MODULE' + strRow].value = arrData[2];
+        //若是變更專案帶碼則清除[模組]、[工作類別]內容
+        if (strOrgValue != arrData[0]) {
+            document.all['txtWORK_CATG_CD' + strRow].value = "";
+            document.all['txtWORK_ITEM_CD' + strRow].value = "";
+            document.all['spanWORK_ITEM_NME' + strRow].innerText = "";
+            document.all['txtMODULE_CD' + strRow].value = "";
+            document.all['spanMODULE_NME' + strRow].innerText = "";
+        }
+    }
+
+    //設定開啟查詢畫面要查詢的類別與對應的參數
+    function openWindow(strRow, strMethod) {
+        var OtherKey = "";
+        var URL = "";
+        var strPrjValue = document.all['txtPROJ_CD' + strRow].value;
+        switch (strMethod) {
+            case "Project":
+                OtherKey = "";
+                URL = "QueryItem.aspx";
+                break;
+            case "Module":
+                //若未輸入專案代碼則不須開窗
+                if (strPrjValue == "") { return; }
+                OtherKey = encodeURI(document.all['txtPROJ_CD' + strRow].value);
+                URL = "QueryItem.aspx";
+                break;
+            case "Item":
+                //若未輸入專案代碼則不須開窗
+                if (strPrjValue == "") { return; }
+                OtherKey = encodeURI(document.all['txtPROJ_CD' + strRow].value);
+                URL = "QueryList.aspx";
+                break;
+        }
+        window.open(URL + "?Method=" + strMethod + "&Row=" + strRow + "&OtherKey=" + OtherKey, "查詢", "width=700,height=400,scrollbars=1,resizable=1");
+    }
+
+    //[增加一列] 點選後的事件
+    //修改時一併要調整 TCSInput.aspx.vb 的 GenTable()
+    function addRow() {
+        var MaxRow = tblInput.rows.length;
+        var iteration = MaxRow;
+        var row = tblInput.insertRow(MaxRow);
+
+        row.style.height = 50
+        row.vAlign = "top"
+        row.align = "left"
+        row.className = "tr_detail"
+
+        //1.專案名稱
+        var cell1 = row.insertCell(0);
+        var sHTML = "";
+        sHTML = '<input id="txtPROJ_CD' + MaxRow + '" maxlength="20" name="txtPROJ_CD" onblur="PROJ_CD_OnBlur(' + MaxRow + ',this);" onfocus="getFocus(this)" size="10">';
+        sHTML += '<img alt="查詢專案名稱" height="18" onclick=openWindow(' + MaxRow + ',"Project") src="../images/icon_search_2.gif" style="cursor: hand" width="18">';
+        sHTML += '<br>';
+        sHTML += '<span id="spanPROJ_NME' + MaxRow + '" name="spanPROJ_NME"></span>';
+        sHTML += '<input id="txtIS_CHK_MODULE' + MaxRow + '"name="txtIS_CHK_MODULE" style="display:none"></span>';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+
+        //2.模組 
+        var cell1 = row.insertCell(1);
+        sHTML = '<input id="txtMODULE_CD' + MaxRow + '" maxlength="20" name="txtMODULE_CD" onblur="MODULE_CD_OnBlur(' + MaxRow + ',this);" onfocus="getFocus(this)" size="10">';
+        sHTML += '<img alt="查詢模組名稱" height="18" onclick=openWindow(' + MaxRow + ',"Module") src="../images/icon_search_2.gif" style="cursor: hand" width="18">';
+        sHTML += '<br/>';
+        sHTML += '<span id="spanMODULE_NME' + MaxRow + '"></span>';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+
+        //3.工作類別 
+        var cell1 = row.insertCell(2);
+        sHTML = '<input id="txtWORK_ITEM_CD' + MaxRow + '" maxlength="20" name="txtWORK_ITEM_CD" onblur="WORK_ITEM_CD_OnBlur(' + MaxRow + ',this);" onfocus="getFocus(this)" size="10">';
+        sHTML += '<input id="txtWORK_CATG_CD' + MaxRow + '" maxlength="20" name="txtWORK_CATG_CD" onblur="getBlur(this)" onfocus="getFocus(this)" size="10" type="hidden">';
+        sHTML += '<img alt="查詢工作類別" height="18" onclick=openWindow(' + MaxRow + ',"Item") src="../images/icon_search_2.gif" style="cursor: hand" width="18">';
+        sHTML += '<br/>';
+        sHTML += '<span id="spanWORK_ITEM_NME' + MaxRow + '"></span>';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+
+        //4.需求單號 
+        var cell1 = row.insertCell(3);
+        sHTML = '<input id="txtREQ_CD' + MaxRow + '" name="txtREQ_CD" onblur="getBlur(this)" onfocus="getFocus(this)" size="18">';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+
+        //5.實際工時
+        var cell1 = row.insertCell(4);
+        sHTML = '<input maxlength="5" name="txtWORK_HR" id="txtWORK_HR' + MaxRow + '" onblur="WORK_HR_OnBlur(' + MaxRow + ',this);" onfocus="getFocus(this)" size="4" class="amount">';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+
+        //6.工作說明 
+        var cell1 = row.insertCell(5);
+        sHTML = '<textarea cols="40" name="txtWROK_DESC" id="txtWROK_DESC" onblur="getBlur(this)" onfocus="getFocus(this)" rows="5"></textarea>';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+
+        //7.完成% 
+        var cell1 = row.insertCell(6);
+        sHTML = '<input maxlength="6" name="txtPRGRS_RATE" id="txtPRGRS_RATE' + MaxRow + '" onblur="PRGRS_RATE_OnBlur(' + MaxRow + ',this);" onfocus="getFocus(this)" size="4"  class="amount">';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+
+        //刪除 
+        var cell1 = row.insertCell(7);
+        cell1.align = "center";
+        sHTML = '<img alt="刪除本行" border="0" height="16" name="imgDelete" onclick="toDelLine(this)" src="../images/icon_delete_b.gif" style="cursor: hand" width="16">';
+        cell1.insertAdjacentHTML('beforeEnd', sHTML);
+    }
+
+    //儲存資料前的檢查與資料處理
+    function checkData() {
+        //日期輸入檢核
+        if (document.all['txtDate'].value == "") {
+            alert("請輸入日期!!");
+            return false;
+        }
+
+        //提示儲存非當日資料
+        if (document.getElementById("SYSDT").value != document.all['txtDate'].value) {
+            if (confirm("是否要儲存非當日資料?") == false) {
+                return false;
+            }
+        }
+
+
+
+
+        //明細資料檢核 
+        var msg = "";
+        var msg_tmp = "";
+        var formObj = document.forms[0];
+        var objProjCD = formObj.txtPROJ_CD;   //專案
+        var objProj_Is_Chk_Module = formObj.txtIS_CHK_MODULE;
+        var objItemCD = formObj.txtWORK_ITEM_CD;   //工作類別
+        var objWorkHR = formObj.txtWORK_HR;   //工時
+        var objMODULE_CD = formObj.txtMODULE_CD; //模組
+        var objREQ_CD = formObj.txtREQ_CD; //需求單號
+        var objWROK_DESC = formObj.txtWROK_DESC //工作說明
+        if (objProjCD != null) {//是否有資料
+            if (objProjCD[0] != null) {  //多筆資料
+                var len = objProjCD.length;
+                for (var i = 0; i < len; i++) {
+                    msg_tmp = "";
+                    if (objProjCD[i].value == "" && objWorkHR[i].value == "") {
+
+                    } else {
+                        var data = Array(objProjCD[i].value, objMODULE_CD[i].value, objItemCD[i].value)
+
+                        var checkResult = queryFieldData(data, "getCheckData")
+
+
+                        if (objProjCD[i].value == "" || (objProjCD[i].value != "" && checkResult[0] == "")) {
+                            msg_tmp += "專案名稱,";
+                            document.all['txtPROJ_CD' + i].select();
+                            document.all['txtPROJ_CD' + i].focus();
+                            strPROJ_NME = "<font color='red'><b>(專案輸入錯誤!)<b></font>";
+                            document.all['spanPROJ_NME' + i].innerHTML = strPROJ_NME;
+                        }
+                        if (objItemCD[i].value == "" || (objItemCD[i].value != "" && checkResult[2] == "")) {
+                            msg_tmp += "工作類別,";
+                            document.all['txtWORK_CATG_CD' + i].select();
+                            document.all['txtWORK_CATG_CD' + i].focus();
+                            strMODULE_NME = "<font color='red'><b>(工作類別輸入錯誤!)<b></font>";
+                            document.all['spanWORK_ITEM_NME' + i].innerHTML = strMODULE_NME;
+                        }
+                        if (objWorkHR[i].value == "") {
+                            msg_tmp += "實際工時,";
+                        }
+                        //if (objProjCD[i].value == "SOC" || objProjCD[i].value == "SR" ||
+                        //    objProjCD[i].value == "ADM" || objProjCD[i].value == "MA" ) {
+
+                        //20200217-調整抓取Proj Table 註記來檢核是否填寫模組
+                        //if (objProjCD[i].value == "SOC" || objProjCD[i].value == "SR" ||
+                        //	objProjCD[i].value == "ADM" || objProjCD[i].value == "MA" ||
+                        //	objProjCD[i].value == "SOC-SP1" || objProjCD[i].value == "SR-SP2-DBA" || objProjCD[i].value == "SR-SP1") {
+                        if (objProj_Is_Chk_Module[i].value == "Y") {
+                            var a = objMODULE_CD[i].value;
+                            if (objMODULE_CD[i].value == "" || (objMODULE_CD[i].value != "" && checkResult[1] == "")) {
+                                msg_tmp += "模組,";
+                                document.all['txtMODULE_CD' + i].select();
+                                document.all['txtMODULE_CD' + i].focus();
+                                strMODULE_NME = "<font color='red'><b>(模組輸入錯誤!)<b></font>";
+                                document.all['spanMODULE_NME' + i].innerHTML = strMODULE_NME;
+                            }
+                            if (objWROK_DESC[i].value == "") {
+                                msg_tmp += "工作說明,";
+                            }
+                            if (objProjCD[i].value == "SR" && objREQ_CD[i].value == "") {
+                                msg_tmp += "需求單號,";
+                            }
+                        }
+                    }
+                    if (msg_tmp != "") {
+                        msg += "請輸入第" + (i + 1) + "筆: " + msg_tmp + "\n";
+                    }
+                }
+            }
+            else {  //只有一筆資料
+                msg_tmp = "";
+                if (objProjCD.value == "" && objWorkHR.value == "") {
+
+                }
+                else {
+                    //用來檢核輸入完textbox後尚未驗證是否有資料存在情況使用
+                    var data = Array(objProjCD.value, objMODULE_CD.value, objItemCD.value)
+                    var checkResult = queryFieldData(data, "getCheckData")
+
+                    if (objProjCD.value == "") {
+                        msg_tmp += "專案名稱,";
+                    }
+                    if (objItemCD.value == "" || (objItemCD.value != "" && checkResult[2] == "")){
+                        msg_tmp += "工作類別,";
+                    }
+                    if (objWorkHR.value == "") {
+                        msg_tmp += "實際工時,";
+                    }
+                    //if (objProjCD.value == "SOC" || objProjCD.value == "SR" ||
+                    //    objProjCD.value == "ADM" || objProjCD.value == "MA" ) {
+
+                    //20200217-調整抓取Proj Table 註記來檢核是否填寫模組
+                    //if (objProjCD.value == "SOC" || objProjCD.value == "SR" ||
+                    //objProjCD.value == "ADM" || objProjCD.value == "MA" ||
+                    //objProjCD.value == "SOC-SP1" || objProjCD.value == "SR-SP2-DBA" ||
+                    //objProjCD.value == "SR-SP1") {
+                    if (objProj_Is_Chk_Module[i].value == "Y") {
+                        if (objMODULE_CD.value == "" || (objMODULE_CD.value != "" && checkResult[1] == "")) {
+                            msg_tmp += "模組,";
+                        }
+                        if (objWROK_DESC.value == "") {
+                            msg_tmp += "工作說明,";
+                        }
+                        if (objProjCD.value == "SR" && objREQ_CD.value == "") {
+                            msg_tmp += "需求單號,";
+                        }
+                    }
+                }
+                if (msg_tmp != "") {
+                    msg += "請輸入第1筆: " + msg_tmp + "\n";
+                }
+            }
+            var intTOTWORK_HR = parseFloat(document.all['lblACTL_HR'].innerText);
+
+            if (intTOTWORK_HR > 18) {
+                msg += "實際總工時不得超過18小時，請確認\n";
+            }
+        } else {
+            //msg +="至少應輸入一筆資料 !!\n";
+        }
+        if (msg != "") {
+            msg = "資料輸入不完整:\n" + msg;
+            alert(msg);
+            return false;
+        } else {
+            return true;
+
+        }
+    }
+
+
+    document.onkeydown = keyFunction;
+
+</script>
+</body>

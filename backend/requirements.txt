@@ -28,3 +28,6 @@ flake8==7.1.1
 # Utilities
 python-dateutil==2.8.2
 pytz==2024.1
+
+# Browser Automation
+playwright==1.51.0

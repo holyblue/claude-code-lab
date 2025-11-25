@@ -1,16 +1,30 @@
 """
-API endpoints for TCS formatting.
+API endpoints for TCS formatting and automation.
 
-Provides endpoints for formatting time entries into TCS system format.
+Provides endpoints for formatting time entries into TCS system format
+and automatic filling using Playwright.
 """
 
 from datetime import date as DateType
+from decimal import Decimal
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_db
-from app.services.tcs_service import format_date_for_tcs, get_date_entries
-from app.schemas import TCSFormatRequest, TCSFormatResponse, TCSDateRangeRequest, TCSDateRangeResponse
+from app.services.tcs_service import (
+    format_date_for_tcs,
+    get_date_entries,
+    convert_entries_to_tcs_format,
+    validate_tcs_data,
+)
+from app.schemas import (
+    TCSFormatRequest,
+    TCSFormatResponse,
+    TCSDateRangeRequest,
+    TCSDateRangeResponse,
+    TCSAutoFillRequest,
+    TCSAutoFillResponse,
+)
 
 router = APIRouter()
 
@@ -100,3 +114,137 @@ def format_tcs_for_date_range(
         total_hours=total_hours,
         formatted_text=combined_text,
     )
+
+
+@router.post(
+    "/auto-fill",
+    response_model=TCSAutoFillResponse,
+    summary="Automatically fill TCS system",
+    description=(
+        "Automatically fill time entries into TCS system using browser automation. "
+        "預設為 dry_run 模式（不會真正儲存）。"
+    ),
+)
+def auto_fill_tcs(
+    request: TCSAutoFillRequest,
+    db: Session = Depends(get_db),
+) -> TCSAutoFillResponse:
+    """
+    自動填寫工時記錄到 TCS 系統
+
+    此端點會：
+    1. 查詢指定日期的工時記錄
+    2. 驗證資料完整性
+    3. 使用 Playwright 自動填寫到 TCS 系統
+
+    Args:
+        request: 包含日期和 dry_run 參數
+        db: 資料庫 session
+
+    Returns:
+        執行結果，包含成功/失敗訊息和填寫筆數
+
+    Raises:
+        HTTPException: 當找不到記錄或資料驗證失敗時
+    """
+    try:
+        # 1. 查詢工時記錄
+        entries = get_date_entries(db, request.date)
+
+        if not entries:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"找不到 {request.date} 的工時記錄",
+            )
+
+        # 2. 轉換為 TCS 格式
+        tcs_entries = convert_entries_to_tcs_format(entries, db)
+
+        # 3. 驗證資料
+        is_valid, errors = validate_tcs_data(tcs_entries)
+        if not is_valid:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"資料驗證失敗: {'; '.join(errors)}",
+            )
+
+        # 4. 計算總工時
+        total_hours = Decimal(sum(e["hours"] for e in tcs_entries))
+
+        # 5. 執行 Playwright 自動填寫
+        # 注意：這裡使用延遲導入，避免在沒有 Playwright 的環境中出錯
+        try:
+            # Import here to avoid errors if playwright not installed
+            import sys
+            from pathlib import Path
+
+            # Add backend to path to import tcs_automation module
+            backend_path = Path(__file__).parent.parent.parent.parent
+            if str(backend_path) not in sys.path:
+                sys.path.insert(0, str(backend_path))
+
+            from tcs_automation.tcs_automation import TCSAutomation
+
+            # 建立自動化實例
+            tcs = TCSAutomation()
+
+            # 轉換日期格式為 YYYYMMDD
+            date_str = request.date.strftime("%Y%m%d")
+
+            # 執行自動填寫
+            tcs.start(headless=True, dry_run=request.dry_run)
+            tcs.fill_time_entries(date_str, tcs_entries)
+            
+            # 填寫完畢後截圖
+            screenshot_path = None
+            try:
+                screenshot_path = tcs.screenshot(frame_only=True, full_page=True)
+            except Exception as e:
+                # 截圖失敗不影響主要流程，只記錄錯誤
+                print(f"⚠️  截圖失敗（不影響主要流程）: {e}")
+            
+            # 儲存前預覽（自動確認模式，不需要等待輸入）
+            tcs.preview_before_save(auto_confirm=True)
+            
+            tcs.save()
+            tcs.close()
+
+            # 成功訊息
+            if request.dry_run:
+                message = f"[DRY RUN] 已模擬填寫 {len(tcs_entries)} 筆工時記錄（未真正儲存）"
+            else:
+                message = f"成功自動填寫 {len(tcs_entries)} 筆工時記錄到 TCS 系統"
+
+            return TCSAutoFillResponse(
+                success=True,
+                message=message,
+                filled_count=len(tcs_entries),
+                dry_run=request.dry_run,
+                total_hours=total_hours,
+                screenshot_path=screenshot_path,
+            )
+
+        except ImportError as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Playwright 未安裝或配置錯誤: {str(e)}",
+            )
+        except Exception as playwright_error:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Playwright 執行失敗: {str(playwright_error)}",
+            )
+
+    except HTTPException:
+        # 重新拋出 HTTP 異常
+        raise
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"資料錯誤: {str(e)}",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"自動填寫失敗: {str(e)}",
+        )

@@ -34,9 +34,10 @@ export const timeEntriesApi = {
   },
 
   // 取得指定日期範圍的工時記錄
-  getByDateRange: (startDate: string, endDate: string) => {
-    return apiClient.get<TimeEntry[]>('/api/time-entries', {
+  getByDateRange: async (startDate: string, endDate: string) => {
+    const response = await apiClient.get<PaginatedResponse<TimeEntry>>('/api/time-entries', {
       params: { start_date: startDate, end_date: endDate },
     })
+    return response.items
   },
 }

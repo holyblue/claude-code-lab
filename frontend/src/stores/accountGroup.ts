@@ -27,7 +27,7 @@ export const useAccountGroupStore = defineStore('accountGroup', () => {
       accountGroups.value = response.items
       return response
     } catch (e) {
-      error.value = e instanceof Error ? e.message : '載入帳組失敗'
+      error.value = e instanceof Error ? e.message : '載入模組失敗'
       throw e
     } finally {
       loading.value = false
@@ -42,7 +42,7 @@ export const useAccountGroupStore = defineStore('accountGroup', () => {
       accountGroups.value.push(accountGroup)
       return accountGroup
     } catch (e) {
-      error.value = e instanceof Error ? e.message : '新增帳組失敗'
+      error.value = e instanceof Error ? e.message : '新增模組失敗'
       throw e
     } finally {
       loading.value = false
@@ -60,7 +60,7 @@ export const useAccountGroupStore = defineStore('accountGroup', () => {
       }
       return accountGroup
     } catch (e) {
-      error.value = e instanceof Error ? e.message : '更新帳組失敗'
+      error.value = e instanceof Error ? e.message : '更新模組失敗'
       throw e
     } finally {
       loading.value = false
@@ -77,7 +77,7 @@ export const useAccountGroupStore = defineStore('accountGroup', () => {
         accountGroups.value.splice(index, 1)
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : '刪除帳組失敗'
+      error.value = e instanceof Error ? e.message : '刪除模組失敗'
       throw e
     } finally {
       loading.value = false

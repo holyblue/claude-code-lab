@@ -46,5 +46,55 @@
     "dailyStats": "每日統計",
     "weeklyStats": "每週統計",
     "monthlyStats": "每月統計"
+  },
+  "tcs": {
+    "syncButton": "同步到 TCS",
+    "syncDialog": {
+      "title": "同步工時到 TCS",
+      "selectDate": "選擇日期",
+      "preview": "預覽 (不寫入)",
+      "confirm": "確認同步",
+      "cancel": "取消",
+      "noEntries": "該日期沒有工時記錄",
+      "warning": "注意: 將覆蓋 TCS 該日現有資料",
+      "alreadySynced": "此日期已同步過",
+      "canResync": "可以重複同步以更新 TCS 資料"
+    },
+    "preview": {
+      "title": "同步預覽結果",
+      "success": "預覽成功！",
+      "subtitle": "以下資料將會填寫到 TCS 系統（目前僅為預覽，未真正寫入）",
+      "date": "日期",
+      "recordCount": "記錄數",
+      "totalHours": "總工時",
+      "status": "狀態",
+      "previewMode": "預覽模式",
+      "validation": "驗證結果",
+      "projectCodeValid": "專案代碼有效",
+      "accountGroupValid": "帳組代碼有效",
+      "workCategoryValid": "工作類別有效",
+      "hoursValid": "總工時未超過 18 小時限制",
+      "tip": "預覽成功代表資料格式正確，可以進行同步",
+      "confirmSync": "確認真正同步"
+    },
+    "error": {
+      "title": "同步失敗",
+      "time": "錯誤時間",
+      "date": "目標日期",
+      "type": "錯誤類型",
+      "reasons": "可能原因",
+      "details": "錯誤詳情（技術資訊）",
+      "suggestions": "建議操作",
+      "copy": "複製錯誤訊息",
+      "retry": "重試",
+      "close": "關閉"
+    },
+    "message": {
+      "syncSuccess": "同步成功！",
+      "previewSuccess": "預覽成功",
+      "syncFailed": "同步失敗",
+      "copySuccess": "已複製錯誤訊息到剪貼簿",
+      "copyFailed": "複製失敗"
+    }
   }
 }

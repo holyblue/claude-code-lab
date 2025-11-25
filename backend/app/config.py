@@ -38,6 +38,12 @@ class Settings(BaseSettings):
     # Work Days (1=Monday, 7=Sunday)
     WORK_DAYS: List[int] = [1, 2, 3, 4, 5]  # Monday to Friday
 
+    # TCS Automation
+    TCS_URL: str = "http://cfcgpap01/tcs/"
+    TCS_HEADLESS: bool = True
+    TCS_TIMEOUT: int = 30000  # milliseconds
+    TCS_DRY_RUN_DEFAULT: bool = True  # 預設為安全模式
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

@@ -2,11 +2,12 @@
 Pydantic schemas for TCS (Time Card System) integration.
 
 These schemas define the data validation and serialization for formatting
-time entries into TCS system format for copy-paste operations.
+time entries into TCS system format for copy-paste operations and automation.
 """
 
 from datetime import date as DateType
 from decimal import Decimal
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -79,3 +80,42 @@ class TCSDateRangeResponse(BaseModel):
         ...,
         description="完整格式化文字（包含所有日期）",
     )
+
+
+# Auto-fill schemas for Playwright automation
+
+class TCSEntryData(BaseModel):
+    """單筆工時記錄格式（對應 Playwright 需要的格式）"""
+
+    project_code: str = Field(..., description="專案代碼", examples=["商2025智001"])
+    account_group: str = Field(..., description="帳組/模組代碼", examples=["A00"])
+    work_category: str = Field(..., description="工作類別代碼", examples=["A07"])
+    hours: float = Field(..., description="實際工時", gt=0, le=18)
+    description: str = Field(..., description="工作說明")
+    requirement_no: Optional[str] = Field(default="", description="需求單號（選填）")
+    progress_rate: Optional[int] = Field(default=0, description="完成百分比", ge=0, le=100)
+
+
+class TCSAutoFillRequest(BaseModel):
+    """自動填寫 TCS 的請求"""
+
+    date: DateType = Field(
+        ...,
+        description="要填寫的日期",
+        examples=["2025-11-24"],
+    )
+    dry_run: bool = Field(
+        default=True,
+        description="乾運行模式（預設 True，不會真正儲存）",
+    )
+
+
+class TCSAutoFillResponse(BaseModel):
+    """自動填寫 TCS 的響應"""
+
+    success: bool = Field(..., description="是否成功")
+    message: str = Field(..., description="執行訊息")
+    filled_count: int = Field(..., description="已填寫的記錄數", ge=0)
+    dry_run: bool = Field(..., description="是否為乾運行模式")
+    total_hours: Optional[Decimal] = Field(None, description="總工時")
+    screenshot_path: Optional[str] = Field(None, description="截圖檔案路徑（如果成功截圖）")

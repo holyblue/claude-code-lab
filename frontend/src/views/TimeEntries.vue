@@ -67,7 +67,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="帳組" width="150">
+        <el-table-column label="模組" width="150">
           <template #default="{ row }">
             {{ getAccountGroup(row.account_group_id)?.full_name || '-' }}
           </template>

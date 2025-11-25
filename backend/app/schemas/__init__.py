@@ -46,6 +46,9 @@ from .tcs import (
     TCSFormatResponse,
     TCSDateRangeRequest,
     TCSDateRangeResponse,
+    TCSEntryData,
+    TCSAutoFillRequest,
+    TCSAutoFillResponse,
 )
 from .milestone import (
     MilestoneBase,
@@ -91,6 +94,9 @@ __all__ = [
     "TCSFormatResponse",
     "TCSDateRangeRequest",
     "TCSDateRangeResponse",
+    "TCSEntryData",
+    "TCSAutoFillRequest",
+    "TCSAutoFillResponse",
     # Milestone schemas
     "MilestoneBase",
     "MilestoneCreate",

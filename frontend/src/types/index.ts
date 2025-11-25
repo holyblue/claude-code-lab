@@ -39,7 +39,7 @@ export interface ProjectUpdate {
   color?: string
 }
 
-// 帳組相關類型
+// 模組相關類型
 export interface AccountGroup {
   id: number
   code: string
@@ -175,4 +175,44 @@ export interface PaginatedResponse<T> {
   page: number
   size: number
   pages: number
+}
+
+// TCS 同步相關類型
+export interface TCSAutoFillRequest {
+  date: string
+  dry_run: boolean
+}
+
+export interface TCSAutoFillResponse {
+  success: boolean
+  message: string
+  filled_count: number
+  dry_run: boolean
+  total_hours: string
+}
+
+export interface TCSFormatResponse {
+  date: string
+  entries: TCSEntry[]
+  formatted_text: string
+  total_hours: string
+}
+
+export interface TCSEntry {
+  project_name: string
+  account_group: string
+  work_category: string
+  hours: number
+  description: string
+}
+
+export interface TCSSyncLog {
+  id: string
+  date: string
+  status: 'success' | 'failed' | 'preview'
+  timestamp: Date
+  message: string
+  error?: string
+  filled_count?: number
+  dry_run: boolean
 }
