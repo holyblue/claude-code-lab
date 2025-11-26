@@ -71,7 +71,7 @@
       "previewMode": "預覽模式",
       "validation": "驗證結果",
       "projectCodeValid": "專案代碼有效",
-      "accountGroupValid": "帳組代碼有效",
+      "accountGroupValid": "模組代碼有效",
       "workCategoryValid": "工作類別有效",
       "hoursValid": "總工時未超過 18 小時限制",
       "tip": "預覽成功代表資料格式正確，可以進行同步",

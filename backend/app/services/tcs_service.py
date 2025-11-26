@@ -32,7 +32,7 @@ def format_date_for_tcs(date_entries: List[TimeEntry], target_date: DateType, db
     TCS Format:
         日期: YYYY/MM/DD
         專案名稱: {project_code}
-        帳組: {code} {name}
+        模組: {code} {name}
         工作類別: {code} {name}
         實際工時: {hours}
         工作說明:
@@ -68,7 +68,7 @@ def format_date_for_tcs(date_entries: List[TimeEntry], target_date: DateType, db
         # Build formatted text
         formatted_lines.extend([
             f"專案名稱: {project.code}",
-            f"帳組: {account_group.full_name}",
+            f"模組: {account_group.full_name}",
             f"工作類別: {work_category.full_name}",
             f"實際工時: {entry.hours}",
             "工作說明:",

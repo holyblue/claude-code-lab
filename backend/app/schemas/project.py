@@ -45,7 +45,7 @@ class ProjectBase(BaseModel):
     )
     default_account_group_id: Optional[int] = Field(
         None,
-        description="預設帳組 ID",
+        description="預設模組 ID",
     )
     default_work_category_id: Optional[int] = Field(
         None,
@@ -104,7 +104,7 @@ class ProjectUpdate(BaseModel):
     )
     default_account_group_id: Optional[int] = Field(
         None,
-        description="預設帳組 ID",
+        description="預設模組 ID",
     )
     default_work_category_id: Optional[int] = Field(
         None,

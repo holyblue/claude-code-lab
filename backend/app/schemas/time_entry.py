@@ -135,5 +135,5 @@ class TimeEntryDateRange(BaseModel):
     start_date: DateType = Field(..., description="開始日期")
     end_date: DateType = Field(..., description="結束日期")
     project_id: Optional[int] = Field(None, description="篩選專案 ID")
-    account_group_id: Optional[int] = Field(None, description="篩選帳組 ID")
+    account_group_id: Optional[int] = Field(None, description="篩選模組 ID")
     work_category_id: Optional[int] = Field(None, description="篩選工作類別 ID")

@@ -102,13 +102,13 @@ python migrate_account_group_optional.py
 **工時記錄模組完整實作：**
 
 1. **API 層（2 個新 API 客戶端）：**
-   - ✅ `accountGroups.ts` - 帳組 CRUD API
+   - ✅ `accountGroups.ts` - 模組 CRUD API
      - getAll, getById, create, update, delete
    - ✅ `workCategories.ts` - 工作類別 CRUD API
      - getAll, getById, create, update, delete
 
 2. **狀態管理（2 個新 Pinia Store）：**
-   - ✅ `accountGroup.ts` - 帳組狀態管理（101 行）
+   - ✅ `accountGroup.ts` - 模組狀態管理（101 行）
      - Actions: fetch, create, update, delete
      - Getters: defaultAccountGroups, getAccountGroupById
      - 完整錯誤處理與 loading 狀態
@@ -121,7 +121,7 @@ python migrate_account_group_optional.py
    - ✅ `TimeEntryForm.vue`（236 行）
      - 完整的表單驗證
      - 支援新增/編輯雙模式
-     - 動態載入選項資料（專案、帳組、工作類別）
+     - 動態載入選項資料（專案、模組、工作類別）
      - Markdown 工作說明編輯
      - 工時驗證（0.5-24 小時，0.5 增量）
      - 響應式設計
@@ -196,9 +196,9 @@ python migrate_account_group_optional.py
 ### 📁 變更檔案
 
 **新增檔案（5 個）：**
-- `frontend/src/api/accountGroups.ts` - 帳組 API 客戶端（30 行）
+- `frontend/src/api/accountGroups.ts` - 模組 API 客戶端（30 行）
 - `frontend/src/api/workCategories.ts` - 工作類別 API 客戶端（30 行）
-- `frontend/src/stores/accountGroup.ts` - 帳組狀態管理（101 行）
+- `frontend/src/stores/accountGroup.ts` - 模組狀態管理（101 行）
 - `frontend/src/stores/workCategory.ts` - 工作類別狀態管理（111 行）
 - `frontend/src/components/TimeEntryForm.vue` - 工時記錄表單（236 行）
 
@@ -252,7 +252,7 @@ python migrate_account_group_optional.py
 - [ ] 日曆視圖實作（月曆顯示、顏色標示）
 - [ ] 統計報表與圖表（ECharts 視覺化）
 - [ ] TCS 格式化輸出介面
-- [ ] 系統設定頁面（帳組、工作類別管理）
+- [ ] 系統設定頁面（模組、工作類別管理）
 - [ ] 單元測試（Vitest）
 
 **下一步優先任務：**
@@ -610,7 +610,7 @@ python migrate_account_group_optional.py
 
 1. **AccountGroup Schemas** (`app/schemas/account_group.py`)
    - AccountGroupBase, Create, Update, Response, List
-   - 驗證帳組代碼、名稱、是否為常用
+   - 驗證模組代碼、名稱、是否為常用
 
 2. **WorkCategory Schemas** (`app/schemas/work_category.py`)
    - WorkCategoryBase, Create, Update, Response, List
@@ -664,7 +664,7 @@ python migrate_account_group_optional.py
 ### 📁 變更檔案
 
 **新增檔案：**
-- `backend/app/schemas/account_group.py` - 帳組 Schema
+- `backend/app/schemas/account_group.py` - 模組 Schema
 - `backend/app/schemas/work_category.py` - 工作類別 Schema
 - `backend/app/schemas/project.py` - 專案 Schema
 - `backend/app/schemas/time_entry.py` - 時間記錄 Schema
@@ -908,7 +908,7 @@ pytest -v                          # 運行測試
    - 核心欄位：code, requirement_code, name, approved_man_days
    - 業務邏輯：軟刪除、代碼唯一性、外鍵關聯
 
-2. **AccountGroup** (帳組) - 3 個測試，89% 覆蓋率
+2. **AccountGroup** (模組) - 3 個測試，89% 覆蓋率
    - 核心欄位：code, name, is_default
    - 唯一約束：(code, name) 組合
 
@@ -931,7 +931,7 @@ pytest -v                          # 運行測試
 
 **資料庫初始化：**
 - 創建 `init_db.py` 腳本
-- 種子資料：2 個帳組、4 個工作類別、8 個系統設定
+- 種子資料：2 個模組、4 個工作類別、8 個系統設定
 - 測試成功：所有表格創建，種子資料插入
 
 ### 📊 測試成果
@@ -980,7 +980,7 @@ pytest -v                          # 運行測試
 
 **模型實作（3/6）：**
 1. **Project** - 專案模型（9 個測試）
-2. **AccountGroup** - 帳組模型（3 個測試）
+2. **AccountGroup** - 模組模型（3 個測試）
 3. **WorkCategory** - 工作類別模型（5 個測試）
 
 ### 📊 測試成果
@@ -990,12 +990,12 @@ pytest -v                          # 運行測試
 
 ### 🔑 關鍵業務規則驗證
 - ✅ 專案代碼唯一性
-- ✅ 帳組 (code, name) 組合唯一性
+- ✅ 模組 (code, name) 組合唯一性
 - ✅ 工作類別扣抵核定工時邏輯
 
 ### 📁 變更檔案
 - `backend/app/models/project.py` - 新增專案模型
-- `backend/app/models/account_group.py` - 新增帳組模型
+- `backend/app/models/account_group.py` - 新增模組模型
 - `backend/app/models/work_category.py` - 新增工作類別模型
 - `backend/tests/unit/test_models.py` - 新增模型測試（部分）
 

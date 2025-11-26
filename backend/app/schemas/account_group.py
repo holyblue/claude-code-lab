@@ -18,19 +18,19 @@ class AccountGroupBase(BaseModel):
         ...,
         min_length=1,
         max_length=50,
-        description="帳組代碼（如：A00）",
+        description="模組代碼（如：A00）",
         examples=["A00", "O18"],
     )
     name: str = Field(
         ...,
         min_length=1,
         max_length=200,
-        description="帳組名稱（如：中概全權）",
+        description="模組名稱（如：中概全權）",
         examples=["中概全權", "數據智能應用科"],
     )
     is_default: bool = Field(
         default=False,
-        description="是否為常用帳組",
+        description="是否為常用模組",
     )
 
 
@@ -47,24 +47,24 @@ class AccountGroupUpdate(BaseModel):
         None,
         min_length=1,
         max_length=50,
-        description="帳組代碼",
+        description="模組代碼",
     )
     name: Optional[str] = Field(
         None,
         min_length=1,
         max_length=200,
-        description="帳組名稱",
+        description="模組名稱",
     )
     is_default: Optional[bool] = Field(
         None,
-        description="是否為常用帳組",
+        description="是否為常用模組",
     )
 
 
 class AccountGroupResponse(AccountGroupBase):
     """Schema for account group responses."""
 
-    id: int = Field(..., description="帳組 ID")
+    id: int = Field(..., description="模組 ID")
     full_name: str = Field(..., description="完整名稱（代碼 + 名稱）")
     created_at: datetime = Field(..., description="創建時間")
     updated_at: datetime = Field(..., description="更新時間")

@@ -52,7 +52,7 @@ def given_projects_exist(db: Session, table: str):
     return projects
 
 
-@given(parsers.parse('存在以下帳組\n{table}'), target_fixture="account_groups")
+@given(parsers.parse('存在以下模組\n{table}'), target_fixture="account_groups")
 def given_account_groups_exist(db: Session, table: str):
     """Create account groups from table data."""
     groups = {}

@@ -69,7 +69,7 @@ class TCSAutomation:
             date: 日期，格式 YYYYMMDD (如: 20251124)
             entries: 工時記錄列表，每筆包含：
                 - project_code: 專案代碼
-                - account_group: 帳組/模組
+                - account_group: 模組/模組
                 - work_category: 工作類別
                 - hours: 工時
                 - description: 工作說明

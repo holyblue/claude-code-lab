@@ -8,7 +8,7 @@
 
 | 正確術語 | ❌ 錯誤/不使用 | 英文 | 說明 |
 |---------|--------------|------|------|
-| **模組** | 帳組、帳組/模組 | Account Group / Module | TCS 系統中的分類欄位，對應資料表 `account_groups` |
+| **模組** | 模組、模組/模組 | Account Group / Module | TCS 系統中的分類欄位，對應資料表 `account_groups` |
 | **工作類別** | 類別 | Work Category | 工作項目分類，對應資料表 `work_categories` |
 | **專案代碼** | 專案編號 | Project Code | 專案的唯一識別碼，如 `商2025智001` |
 | **需求單代碼** | 需求編號 | Requirement Code | 需求單的識別碼 |
@@ -142,12 +142,12 @@ async syncToTCS(date: string, dryRun: boolean = true): Promise<TCSAutoFillRespon
 ```python
 # 錯誤：把模組當作必填
 if not account_group:
-    raise ValueError(f"找不到帳組 ID: {entry.account_group_id}")
+    raise ValueError(f"找不到模組 ID: {entry.account_group_id}")
 ```
 
 ```python
 # 錯誤：使用不一致的術語
-errors.append(f"帳組為必填")
+errors.append(f"模組為必填")
 ```
 
 ### ✅ 正確用法
@@ -225,7 +225,7 @@ if entry.account_group_id and not account_group:
 // ❌ 錯誤
 "成功上傳 2 筆時間記錄"
 "測試模式完成"
-"找不到帳組"
+"找不到模組"
 ```
 
 ## 🔐 安全與測試規範
@@ -246,7 +246,7 @@ raise ValueError(f"第 {idx} 筆記錄：專案代碼為必填")
 
 # ❌ 避免模糊或不一致的訊息
 raise ValueError("ID not found")
-raise ValueError("帳組錯誤")
+raise ValueError("模組錯誤")
 ```
 
 ## 📚 專案特定慣例
@@ -283,7 +283,7 @@ If account_group_id is provided...
 
 在提交程式碼前，請確認：
 
-- [ ] 使用「模組」而非「帳組」
+- [ ] 使用「模組」而非「模組」
 - [ ] 使用「工時記錄」而非「時間記錄」
 - [ ] 使用「同步到 TCS」而非「上傳到 TCS」
 - [ ] 註釋使用中文（或英文），保持一致

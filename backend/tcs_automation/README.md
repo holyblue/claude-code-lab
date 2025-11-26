@@ -229,7 +229,7 @@ screenshot_path = tcs.screenshot(path='my_screenshot.png', frame_only=True)
 |-----------|---------|--------|------|------|
 | date | 日期 | `#txtDate` | ✅ | 格式: YYYYMMDD |
 | project.code | 專案代碼 | `#txtPROJ_CD{idx}` | ✅ | 會觸發 AJAX 查詢專案名稱 |
-| account_group.code | 帳組/模組 | `#txtMODULE_CD{idx}` | ✅ | 會觸發 AJAX 查詢模組名稱 |
+| account_group.code | 模組/模組 | `#txtMODULE_CD{idx}` | ✅ | 會觸發 AJAX 查詢模組名稱 |
 | work_category.code | 工作類別 | `#txtWORK_ITEM_CD{idx}` | ✅ | 會觸發 AJAX 查詢類別名稱 |
 | - | 需求單號 | `#txtREQ_CD{idx}` | ❌ | 選填 |
 | hours | 實際工時 | `#txtWORK_HR{idx}` | ✅ | 單位: 小時 |

@@ -53,7 +53,7 @@
 
 - [x] 建立 `backend/tests/mocks/tcs_mock.py`
   - [x] `create_mock_project()` - 模擬專案
-  - [x] `create_mock_account_group()` - 模擬帳組
+  - [x] `create_mock_account_group()` - 模擬模組
   - [x] `create_mock_work_category()` - 模擬工作類別
   - [x] `create_mock_time_entry()` - 模擬時間記錄
   - [x] `get_standard_test_data()` - 標準測試資料

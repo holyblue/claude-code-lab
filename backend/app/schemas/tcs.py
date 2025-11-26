@@ -16,7 +16,7 @@ class TCSEntryFormat(BaseModel):
     """Schema for a single TCS-formatted time entry."""
 
     project_name: str = Field(..., description="專案名稱")
-    account_group: str = Field(..., description="帳組（代碼 + 名稱）")
+    account_group: str = Field(..., description="模組（代碼 + 名稱）")
     work_category: str = Field(..., description="工作類別（代碼 + 名稱）")
     hours: Decimal = Field(..., description="實際工時")
     description: str = Field(..., description="工作說明")
@@ -88,7 +88,7 @@ class TCSEntryData(BaseModel):
     """單筆工時記錄格式（對應 Playwright 需要的格式）"""
 
     project_code: str = Field(..., description="專案代碼", examples=["商2025智001"])
-    account_group: str = Field(..., description="帳組/模組代碼", examples=["A00"])
+    account_group: str = Field(..., description="模組/模組代碼", examples=["A00"])
     work_category: str = Field(..., description="工作類別代碼", examples=["A07"])
     hours: float = Field(..., description="實際工時", gt=0, le=18)
     description: str = Field(..., description="工作說明")

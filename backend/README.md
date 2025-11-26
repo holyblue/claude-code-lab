@@ -192,12 +192,12 @@ API 文檔可透過 Swagger UI 查看：啟動應用後訪問 `http://localhost:
 
 ### 已實作的 API 端點
 
-**帳組管理 (Account Groups)**
-- `POST /api/account-groups/` - 創建帳組
-- `GET /api/account-groups/` - 列出所有帳組
-- `GET /api/account-groups/{id}` - 獲取特定帳組
-- `PATCH /api/account-groups/{id}` - 更新帳組
-- `DELETE /api/account-groups/{id}` - 刪除帳組
+**模組管理 (Account Groups)**
+- `POST /api/account-groups/` - 創建模組
+- `GET /api/account-groups/` - 列出所有模組
+- `GET /api/account-groups/{id}` - 獲取特定模組
+- `PATCH /api/account-groups/{id}` - 更新模組
+- `DELETE /api/account-groups/{id}` - 刪除模組
 
 **工作類別管理 (Work Categories)**
 - `POST /api/work-categories/` - 創建工作類別

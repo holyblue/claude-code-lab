@@ -423,7 +423,7 @@ Feature: TCS 格式化輸出
       | 專案代碼    | 專案名稱 |
       | 需2025單001 | AI系統   |
       | 需2025單002 | 數據平台 |
-    And 存在以下帳組
+    And 存在以下模組
       | 代碼 | 名稱         |
       | A00  | 中概全權     |
       | O18  | 數據智能應用科 |
@@ -434,7 +434,7 @@ Feature: TCS 格式化輸出
 
   Scenario: 格式化單日多筆工時記錄
     Given 日期 "2025-11-12" 有以下工時記錄
-      | 專案代碼    | 帳組 | 工作類別 | 工時 | 工作說明                              |
+      | 專案代碼    | 模組 | 工作類別 | 工時 | 工作說明                              |
       | 需2025單001 | A00  | A07      | 4.0  | - [x] 需求分析\n- [x] 系統設計        |
       | 需2025單002 | O18  | B04      | 3.5  | - [x] 資料庫優化                      |
     When 我請求格式化日期 "2025-11-12" 的工時記錄
@@ -442,7 +442,7 @@ Feature: TCS 格式化輸出
       """
       日期: 2025/11/12
       專案名稱: 需2025單001
-      帳組: A00 中概全權
+      模組: A00 中概全權
       工作類別: A07 其它
       實際工時: 4.0
       工作說明:
@@ -452,7 +452,7 @@ Feature: TCS 格式化輸出
       ---
 
       專案名稱: 需2025單002
-      帳組: O18 數據智能應用科
+      模組: O18 數據智能應用科
       工作類別: B04 其它
       實際工時: 3.5
       工作說明:
@@ -465,7 +465,7 @@ Feature: TCS 格式化輸出
 ### 1. 專案管理模組（簡化版）
 
 #### 1.1 專案 CRUD
-- 創建專案（專案代碼、名稱、預設帳組、預設工作類別）
+- 創建專案（專案代碼、名稱、預設模組、預設工作類別）
 - 查看專案列表（列表視圖、搜尋）
 - 編輯專案資訊
 - 刪除專案（軟刪除）
@@ -481,7 +481,7 @@ Feature: TCS 格式化輸出
   - 專案核准的總工時額度
   - 用於追蹤專案工時使用情況
   - 換算：1 人天 = 7.5 小時
-- 預設帳組（選填，可從固定清單選擇）
+- 預設模組（選填，可從固定清單選擇）
 - 預設工作類別（選填，可從固定清單選擇）
 - 備註說明
 - 狀態（進行中/已完成/已歸檔）
@@ -498,8 +498,8 @@ Feature: TCS 格式化輸出
 
 #### 2.2 工時記錄屬性
 - 日期（必填）
-- 專案（必填，從專案清單選擇，自動帶入預設帳組和工作類別）
-- 帳組（必填，可修改）
+- 專案（必填，從專案清單選擇，自動帶入預設模組和工作類別）
+- 模組（必填，可修改）
 - 工作類別（必填，可修改）
 - 實際工時（必填，數字，如：1.5、4、2）
   - 單筆工時範圍：0.5 ~ 12 小時
@@ -626,7 +626,7 @@ Feature: TCS 格式化輸出
   ```
   日期: 2025/11/12
   專案名稱: 需2025單001
-  帳組: A00 中概全權
+  模組: A00 中概全權
   工作類別: A07 其它
   實際工時: 1.5
   工作說明:
@@ -635,7 +635,7 @@ Feature: TCS 格式化輸出
   ---
 
   專案名稱: 需2025單002
-  帳組: O18 數據智能應用科
+  模組: O18 數據智能應用科
   工作類別: B04 其它
   實際工時: 4
   工作說明:
@@ -657,7 +657,7 @@ Feature: TCS 格式化輸出
 - 自動填寫各欄位：
   - 日期選擇
   - 專案名稱（使用搜尋選擇器）
-  - 帳組（使用搜尋選擇器）
+  - 模組（使用搜尋選擇器）
   - 工作類別（使用搜尋選擇器）
   - 實際工時
   - 工作說明
@@ -673,13 +673,13 @@ Feature: TCS 格式化輸出
 
 ### 7. 基礎資料管理
 
-#### 7.1 帳組管理
-- 預設帳組清單（固定選項）：
+#### 7.1 模組管理
+- 預設模組清單（固定選項）：
   - A00 中概全權
   - O18 數據智能應用科
   - （其他可新增）
-- 新增、編輯、刪除帳組
-- 設定常用帳組
+- 新增、編輯、刪除模組
+- 設定常用模組
 
 #### 7.2 工作類別管理
 - 預設工作類別清單（固定選項）：
@@ -697,7 +697,7 @@ Feature: TCS 格式化輸出
 
 #### 7.3 工作範本管理（可選）
 - 儲存常做的工作為範本
-- 範本內容：專案、帳組、工作類別、預設工時、工作說明
+- 範本內容：專案、模組、工作類別、預設工時、工作說明
 - 快速套用範本創建工時記錄
 
 ### 8. 設定模組
@@ -738,7 +738,7 @@ CREATE TABLE projects (
     requirement_code VARCHAR(50) NOT NULL,     -- 需求單代碼（如：R202507236423）
     name VARCHAR(200) NOT NULL,                -- 專案名稱
     approved_man_days DECIMAL(10,2),           -- 核定工時（人天，如：20）
-    default_account_group_id INTEGER,          -- 預設帳組 FK
+    default_account_group_id INTEGER,          -- 預設模組 FK
     default_work_category_id INTEGER,          -- 預設工作類別 FK
     description TEXT,                          -- 備註
     status VARCHAR(20) DEFAULT 'active',       -- active/completed/archived
@@ -751,12 +751,12 @@ CREATE TABLE projects (
 );
 ```
 
-#### 2. account_groups (帳組表)
+#### 2. account_groups (模組表)
 ```sql
 CREATE TABLE account_groups (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    code VARCHAR(50) NOT NULL,                 -- 帳組代碼（如：A00）
-    name VARCHAR(200) NOT NULL,                -- 帳組名稱（如：中概全權）
+    code VARCHAR(50) NOT NULL,                 -- 模組代碼（如：A00）
+    name VARCHAR(200) NOT NULL,                -- 模組名稱（如：中概全權）
     full_name VARCHAR(250) GENERATED ALWAYS AS (code || ' ' || name) STORED,
     is_default BOOLEAN DEFAULT FALSE,          -- 是否為常用
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -786,7 +786,7 @@ CREATE TABLE time_entries (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date DATE NOT NULL,                        -- 日期
     project_id INTEGER NOT NULL,               -- 專案 FK
-    account_group_id INTEGER NOT NULL,         -- 帳組 FK
+    account_group_id INTEGER NOT NULL,         -- 模組 FK
     work_category_id INTEGER NOT NULL,         -- 工作類別 FK
     hours DECIMAL(5,2) NOT NULL,               -- 實際工時
     description TEXT NOT NULL,                 -- 工作說明（支援 Markdown）
@@ -809,7 +809,7 @@ CREATE TABLE work_templates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(200) NOT NULL,                -- 範本名稱
     project_id INTEGER,                        -- 專案 FK
-    account_group_id INTEGER,                  -- 帳組 FK
+    account_group_id INTEGER,                  -- 模組 FK
     work_category_id INTEGER,                  -- 工作類別 FK
     default_hours DECIMAL(5,2),                -- 預設工時
     description_template TEXT,                 -- 工作說明範本
@@ -833,10 +833,10 @@ CREATE TABLE settings (
 
 ### 初始資料
 
-系統啟動時自動插入常用的帳組和工作類別：
+系統啟動時自動插入常用的模組和工作類別：
 
 ```sql
--- 帳組
+-- 模組
 INSERT INTO account_groups (code, name, is_default) VALUES
 ('A00', '中概全權', TRUE),
 ('O18', '數據智能應用科', TRUE);
@@ -893,12 +893,12 @@ GET    /api/time-entries/daily-summary - 獲取每日工時總和
 POST   /api/time-entries/batch    - 批次更新工時記錄
 ```
 
-#### 帳組 API
+#### 模組 API
 ```
-GET    /api/account-groups        - 獲取所有帳組
-POST   /api/account-groups        - 創建新帳組
-PUT    /api/account-groups/{id}   - 更新帳組
-DELETE /api/account-groups/{id}   - 刪除帳組
+GET    /api/account-groups        - 獲取所有模組
+POST   /api/account-groups        - 創建新模組
+PUT    /api/account-groups/{id}   - 更新模組
+DELETE /api/account-groups/{id}   - 刪除模組
 ```
 
 #### 工作類別 API
@@ -1083,7 +1083,7 @@ frontend/
   - 支援按專案代碼或需求單代碼搜尋
 - 新增/編輯專案表單
   - 必填：專案代碼、需求單代碼、專案名稱
-  - 選填：核定工時（人天）、預設帳組、預設工作類別、備註、顏色
+  - 選填：核定工時（人天）、預設模組、預設工作類別、備註、顏色
 - 專案詳情
   - 顯示完整專案資訊（含需求單代碼、核定工時）
   - **核定工時使用情況**：
@@ -1114,7 +1114,7 @@ frontend/
 
 #### 7. 設定 (Settings)
 - 系統設定（語言、主題、工時標準）
-- 帳組管理
+- 模組管理
 - 工作類別管理
 - 工作範本管理
 - 資料管理（匯出/匯入/備份）
@@ -1200,7 +1200,7 @@ class TCSAutoFiller:
         """填寫單筆工時記錄"""
         # 1. 選擇日期
         # 2. 點擊專案搜尋器，輸入專案代碼
-        # 3. 點擊帳組搜尋器，選擇帳組
+        # 3. 點擊模組搜尋器，選擇模組
         # 4. 點擊工作類別搜尋器，選擇類別
         # 5. 輸入實際工時
         # 6. 輸入工作說明
@@ -1239,7 +1239,7 @@ class TCSAutoFiller:
 - [ ] FastAPI 基礎設定
 - [ ] SQLAlchemy 模型定義（6 個表）
 - [ ] 資料庫初始化與遷移
-- [ ] 初始資料插入（帳組、工作類別）
+- [ ] 初始資料插入（模組、工作類別）
 - [ ] 基礎 API 端點（CRUD）
 
 #### Week 2: 前端基礎架構
@@ -1280,7 +1280,7 @@ class TCSAutoFiller:
   - [ ] 複製到剪貼簿
   - [ ] 預覽格式化結果
 - [ ] 設定頁面
-  - [ ] 帳組管理
+  - [ ] 模組管理
   - [ ] 工作類別管理
   - [ ] 系統設定
   - [ ] 資料管理
@@ -1325,7 +1325,7 @@ class TCSAutoFiller:
 - 資料庫索引（date, project_id）
 - 前端虛擬滾動（大量記錄）
 - API 分頁（避免一次載入過多資料）
-- 快取機制（專案、帳組、類別清單）
+- 快取機制（專案、模組、類別清單）
 
 ### 程式碼品質
 - 類型提示（TypeScript for Vue, Python Type Hints）
