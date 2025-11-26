@@ -5,6 +5,7 @@ Provides endpoints for formatting time entries into TCS system format
 and automatic filling using Playwright.
 """
 
+import asyncio
 from datetime import date as DateType
 from decimal import Decimal
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -125,7 +126,7 @@ def format_tcs_for_date_range(
         "預設為 dry_run 模式（不會真正儲存）。"
     ),
 )
-def auto_fill_tcs(
+async def auto_fill_tcs(
     request: TCSAutoFillRequest,
     db: Session = Depends(get_db),
 ) -> TCSAutoFillResponse:
@@ -173,6 +174,7 @@ def auto_fill_tcs(
 
         # 5. 執行 Playwright 自動填寫
         # 注意：這裡使用延遲導入，避免在沒有 Playwright 的環境中出錯
+        # 由於 Playwright 使用同步 API，需要在執行緒池中執行以避免與 asyncio 衝突
         try:
             # Import here to avoid errors if playwright not installed
             import sys
@@ -185,29 +187,44 @@ def auto_fill_tcs(
 
             from tcs_automation.tcs_automation import TCSAutomation
 
-            # 建立自動化實例
-            tcs = TCSAutomation()
+            # 定義同步函數來執行 Playwright 操作
+            def run_playwright_automation():
+                """在執行緒中執行同步的 Playwright 操作"""
+                # 建立自動化實例
+                tcs = TCSAutomation()
 
-            # 轉換日期格式為 YYYYMMDD
-            date_str = request.date.strftime("%Y%m%d")
+                # 轉換日期格式為 YYYYMMDD
+                date_str = request.date.strftime("%Y%m%d")
 
-            # 執行自動填寫
-            tcs.start(headless=True, dry_run=request.dry_run)
-            tcs.fill_time_entries(date_str, tcs_entries)
-            
-            # 填寫完畢後截圖
-            screenshot_path = None
+                # 執行自動填寫（使用快速模式以提升性能）
+                tcs.start(headless=True, dry_run=request.dry_run, fast_mode=True)
+                tcs.fill_time_entries(date_str, tcs_entries)
+                
+                # 填寫完畢後截圖
+                screenshot_path = None
+                try:
+                    screenshot_path = tcs.screenshot(frame_only=True, full_page=True)
+                except Exception as e:
+                    # 截圖失敗不影響主要流程，只記錄錯誤
+                    print(f"⚠️  截圖失敗（不影響主要流程）: {e}")
+                
+                # 儲存前預覽（自動確認模式，不需要等待輸入）
+                tcs.preview_before_save(auto_confirm=True)
+                
+                tcs.save()
+                tcs.close()
+                
+                return screenshot_path
+
+            # 在執行緒池中執行 Playwright 操作
+            # 使用 asyncio.to_thread (Python 3.9+) 或 run_in_executor
             try:
-                screenshot_path = tcs.screenshot(frame_only=True, full_page=True)
-            except Exception as e:
-                # 截圖失敗不影響主要流程，只記錄錯誤
-                print(f"⚠️  截圖失敗（不影響主要流程）: {e}")
-            
-            # 儲存前預覽（自動確認模式，不需要等待輸入）
-            tcs.preview_before_save(auto_confirm=True)
-            
-            tcs.save()
-            tcs.close()
+                # Python 3.9+ 使用 asyncio.to_thread
+                screenshot_path = await asyncio.to_thread(run_playwright_automation)
+            except AttributeError:
+                # Python 3.8 或更早版本使用 run_in_executor
+                loop = asyncio.get_event_loop()
+                screenshot_path = await loop.run_in_executor(None, run_playwright_automation)
 
             # 成功訊息
             if request.dry_run:

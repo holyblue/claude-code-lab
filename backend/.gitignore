@@ -57,3 +57,6 @@ coverage.xml
 
 # FastAPI
 .cache/
+
+# Screenshots (TCS automation screenshots)
+screenshots/

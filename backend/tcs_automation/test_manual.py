@@ -93,7 +93,7 @@ def main():
     tcs = TCSAutomation()
     try:
         print("啟動瀏覽器...")
-        tcs.start(headless=args.headless, dry_run=dry_run)
+        tcs.start(headless=args.headless, dry_run=dry_run, fast_mode=True)
         
         print(f"\n填寫 {args.date} 的工時記錄...")
         tcs.fill_time_entries(args.date, test_entries)
@@ -107,7 +107,9 @@ def main():
         tcs.save()
         
         import time
-        time.sleep(3)  # 等待儲存完成
+        # 快速模式：減少等待時間
+        wait_time = 1.0 if tcs.fast_mode else 3.0
+        time.sleep(wait_time)  # 等待儲存完成
         
         if dry_run:
             print("\n✅ DRY RUN 完成：未真正儲存資料")
